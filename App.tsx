@@ -1,16 +1,12 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
-import Post from './src/components/Post';
-import { posts } from './src/assets/data';
+import { StyleSheet, View } from 'react-native';
+import HomeScreen from './src/screens/HomeScreen';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <FlatList
-        data={posts}
-        renderItem={({item, index, separators}) => <Post key={item.id} post={item} />}
-      />
+      <HomeScreen/>
       <StatusBar style="auto" />
     </View>
   );
