@@ -8,6 +8,7 @@ import { IPost } from '../types/models'
 import Comment from './Comment';
 import colors from '../theme/colors';
 import DoublePressable from './DoublePressable';
+import Carousel from './Carousel';
 
 interface IFeedPost {
   post: IPost
@@ -21,6 +22,17 @@ function Post({ post }: IFeedPost) {
 
   const toggleLike = () => setPostLiked(v => !v)
   const toggleDescriptionExpanded = () => setIsDescriptionExpanded(v => !v)
+
+  const content = post.image ?
+      <DoublePressable onDoublePress={toggleLike}>
+        <Image
+            source={{ uri: post.image }}
+            className="w-full aspect-square"
+        />
+      </DoublePressable> :
+      post.images ?
+      <Carousel images={post.images} onDoublePress={toggleLike}/> : "";
+
 
   return (
     <>
@@ -38,12 +50,7 @@ function Post({ post }: IFeedPost) {
 
         {/* Body*/}
         <View className=" w-full bg-slate-400 ">
-          <DoublePressable onDoublePress={toggleLike}>
-            <Image
-                source={{ uri: post.image }}
-                className="w-full aspect-square"
-            />
-          </DoublePressable>
+            {content}
         </View>
         {/* Footer*/}
         <View className=" flex flex-row p-3 space-x-2 ">
@@ -81,7 +88,7 @@ function Post({ post }: IFeedPost) {
           <Text className="text-gray-500" onPress={toggleDescriptionExpanded}>{isDescriptionExpanded ? "Ver Menos": "Ver más"}</Text>
         </View >
         {post.comments.map((comment) => {
-          return <Comment comment={comment} user={post.user} />
+          return <Comment comment={comment} user={post.user} key={comment.id} />
         })}
         <View className="px-3 mb-[2px]">
           <Text className="text-sm text-gray-500">Ver los {post.nofComments} comentarios</Text>
