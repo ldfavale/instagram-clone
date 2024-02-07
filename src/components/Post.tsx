@@ -9,29 +9,38 @@ import Comment from './Comment';
 import colors from '../theme/colors';
 import DoublePressable from './DoublePressable';
 import Carousel from './Carousel';
+import VideoPlayer from './VideoPlayer';
 
 interface IFeedPost {
-  post: IPost
+  post: IPost,
+  isVisible: boolean
 }
 
 
 
-function Post({ post }: IFeedPost) {
+function Post({ post, isVisible}: IFeedPost) {
   const [postLiked, setPostLiked] = useState(false)
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
-
   const toggleLike = () => setPostLiked(v => !v)
   const toggleDescriptionExpanded = () => setIsDescriptionExpanded(v => !v)
 
-  const content = post.image ?
-      <DoublePressable onDoublePress={toggleLike}>
-        <Image
-            source={{ uri: post.image }}
-            className="w-full aspect-square"
-        />
-      </DoublePressable> :
-      post.images ?
-      <Carousel images={post.images} onDoublePress={toggleLike}/> : "";
+  const getPostContent = () => {
+    if (post.image)
+      return (
+        <DoublePressable onDoublePress={toggleLike}>
+          <Image
+              source={{ uri: post.image }}
+              className="w-full aspect-square"
+          />
+        </DoublePressable>
+      )
+    else if (post.images)
+      return <Carousel images={post.images} onDoublePress={toggleLike}/>
+    else if (post.video)
+      return <VideoPlayer uri={post.video} shouldPlay={isVisible} />
+  }
+
+  const content = getPostContent()
 
 
   return (
