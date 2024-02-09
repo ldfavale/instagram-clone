@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import posts from '../assets/data/data.json';
+import posts from '../assets/data/posts.json';
 import Post from '../components/Post';
 import { FlatList, ViewToken } from 'react-native';
 
