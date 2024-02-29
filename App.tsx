@@ -1,21 +1,6 @@
 import React from 'react'
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import HomeScreen from './src/screens/HomeScreen';
+import Navigation from './src/navigation';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <HomeScreen/>
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <Navigation/>;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 20,
-    backgroundColor: "white"
-  },
-});

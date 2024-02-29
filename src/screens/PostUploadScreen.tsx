@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { Camera, CameraType, FlashMode } from 'expo-camera';
+import React, { useEffect, useRef, useState } from 'react'
+import { Camera, CameraPictureOptions, CameraRecordingOptions, CameraType, FlashMode, VideoQuality } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../theme/colors';
 
@@ -21,8 +21,11 @@ const flashModeToIcon = {
 const PostUploadScreen = () => {
 
   const [hasPermissions, setHasPermissions] = useState<boolean | null>(null)
-  const [camaraType, setCamaraType] = useState(Camera.Constants.Type.back)
+  const [camaraType, setCamaraType] = useState(CameraType.back)
   const [flash, setFlash] = useState(flashModes[0])
+  const [cameraReady, setCameraReady] = useState(false)
+  const camera = useRef<Camera>(null)
+  const [isRecording, setIsRecording] = useState(false)
 
   useEffect(() => {
     const getPermission = async () => {
@@ -42,24 +45,70 @@ const PostUploadScreen = () => {
 
   const flipCamera = () => {
     setCamaraType(currentType => (
-      currentType === Camera.Constants.Type.back ?
-        Camera.Constants.Type.front :
-        Camera.Constants.Type.back
+      currentType === CameraType.back ?
+      CameraType.front :
+      CameraType.back
     ))
   }
   const flipFlash = () => {
     const currentIndex = flashModes.indexOf(flash)
-    const nextIndex = currentIndex === flashModes.length -1 ? 0 : currentIndex + 1;
+    const nextIndex = currentIndex === flashModes.length - 1 ? 0 : currentIndex + 1;
     setFlash(flashModes[nextIndex])
-
   }
 
-  console.log(flashModeToIcon[flash])
-  console.log("Flash => ",flash)
+  const takePicture = async () => {
+    if (!cameraReady && !camera.current) return;
+    const options: CameraPictureOptions = {
+      quality: 0.5,
+      base64: true,
+      skipProcessing: true
+    }
+    const result = await camera.current?.takePictureAsync(options)
+    console.log(result)
+  }
+
+  const startRecording = async () => {
+    console.warn("Start")
+    if (!cameraReady && !camera.current || isRecording) return;
+    const options: CameraRecordingOptions = {
+      quality: VideoQuality['640:480'],
+      maxDuration: 60,
+      maxFileSize: 10 * 1024 * 1024,
+      mute: false
+    }
+    setIsRecording(true)
+    try {
+      const result = await camera.current?.recordAsync(options)
+      console.log(result)
+    } catch (e) {
+      console.log(e)
+      setIsRecording(false)
+    }
+  }
+
+  const stopRecording = () => {
+    if (isRecording) {
+      camera.current?.stopRecording()
+      .then(() => {
+        setIsRecording(false)
+        console.warn("Stop")
+      })
+      .catch((err) => {
+        console.error(err)
+      });
+    }
+  }
 
   return (
     <View className="flex-1 bg-black">
-      <Camera className="aspect-[3/4] w-full" type={camaraType} ratio='4:3' flashMode={flash} />
+      <Camera
+        ref={camera}
+        className="aspect-[9/16] w-full"
+        type={camaraType}
+        ratio='16:9'
+        flashMode={flash}
+        onCameraReady={() => setCameraReady(true)}
+      />
       <View className="flex-row justify-between items-center absolute w-full  p-6 top-0">
         <MaterialIcons name="close" size={24} color={colors.white} />
         <Pressable onPress={flipFlash}>
@@ -70,7 +119,12 @@ const PostUploadScreen = () => {
       </View>
       <View className="flex-row justify-around items-center w-full absolute bottom-5">
         <MaterialIcons name="photo-library" size={24} color={colors.white} />
-        <MaterialIcons name="circle" size={94} color={colors.white} />
+        {cameraReady &&
+          <Pressable onPress={takePicture} onLongPress={startRecording} onPressOut={stopRecording}>
+            <MaterialIcons name="circle" size={94} color={isRecording ? colors.accent : colors.white} />
+          </Pressable>
+        }
+
         <Pressable onPress={flipCamera}>
           <MaterialIcons name="flip-camera-ios" size={24} color={colors.white} />
         </Pressable>
