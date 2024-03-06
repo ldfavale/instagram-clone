@@ -11,6 +11,7 @@ import DoublePressable from './DoublePressable';
 import Carousel from './Carousel';
 import VideoPlayer from './VideoPlayer';
 import { useNavigation } from '@react-navigation/native';
+import { FeedNavigationProp } from '../navigation/types';
 
 interface IFeedPost {
   post: IPost,
@@ -24,10 +25,10 @@ function Post({ post, isVisible }: IFeedPost) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const toggleLike = () => setPostLiked(v => !v)
   const toggleDescriptionExpanded = () => setIsDescriptionExpanded(v => !v)
-  const navigation = useNavigation()
+  const navigation = useNavigation<FeedNavigationProp>()
 
   const navigateToUser = () => {
-    navigation.navigate('Profile', {userId: post.user})
+    navigation.navigate('UserProfile', {userId: post.user.id})
   }
 
   const getPostContent = () => {

@@ -1,54 +1,42 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
-import HomeScreen from '../screens/HomeScreen'
-import ProfileScreen from '../screens/ProfileScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Image, Text, View } from 'react-native'
-import logo from '../assets/images/logo.png'
+import BottomTabNavigator from './BottomTabNavigator'
+import { RootNevigatorParamList } from './types'
+import * as Linking from 'expo-linking';
+import { Text } from 'react-native';
 
-const Stack = createNativeStackNavigator();
+const prefix = Linking.createURL('/');
+
+
+
+const Stack = createNativeStackNavigator<RootNevigatorParamList>();
 
 const Navigation = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName='Feed'
-        screenOptions={{
-          headerShown: true,
+  const linking = {
+    prefixes: [prefix],
+  };
 
+  return (
+    <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
+      <Stack.Navigator
+        initialRouteName='Home'
+        screenOptions={{
+          headerShown: false,
         }}>
         <Stack.Screen
-          name="Feed"
-          component={HomeScreen}
-          options={{
-            headerTitle: HeaderTitle,
-            headerTitleAlign: 'center'
-          }}
+          name="Home"
+          component={BottomTabNavigator}
+          options={{headerShown: false}}
         />
 
-        <Stack.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{
-            title: 'Profile'
-
-          }}
-
-        />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
   )
 }
 
-const HeaderTitle = () => {
-  return (
-    <View className="">
-      <Image source={logo} className="w-28 h-9" resizeMode='contain' />
-    </View>
-  )
-}
 
 
 export default Navigation

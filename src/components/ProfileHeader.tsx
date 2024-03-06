@@ -1,12 +1,19 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 import {IUser} from '../types/models'
+import { useNavigation } from '@react-navigation/native'
+import { ProfileNavigationProp } from '../navigation/types'
 
 interface IProfileHeader {
   user: IUser
 }
 
 const ProfileHeader = ({user}:IProfileHeader) => {
+  const navigation = useNavigation<ProfileNavigationProp>()
+  const navigateToEditProfile = () => {
+    navigation.navigate('EditProfile')
+  }
+
   return (
     <View className='p-6 space-y-4'>
     <View className="flex-row items-center justify-between  pt-6" >
@@ -29,7 +36,10 @@ const ProfileHeader = ({user}:IProfileHeader) => {
       <Text className='text-grey text-base leading-5'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta maxime dignissimos id possimus ullam animi itaque deleniti nulla!</Text>
     </View>
     <View className='flex-row w-full space-x-4'>
-      <Text className='font-bold text-lg p-1 border border-1 border-gray-200 rounded-lg flex-1 text-center '> Edit Profile </Text>
+      <Text
+      className='font-bold text-lg p-1 border border-1 border-gray-200 rounded-lg flex-1 text-center '
+      onPress={() => navigateToEditProfile()}
+      > Edit Profile </Text>
       <Text className='font-bold text-lg p-1 border border-1 border-gray-200 rounded-lg flex-1 text-center '>Another Button</Text>
     </View>
   </View>
