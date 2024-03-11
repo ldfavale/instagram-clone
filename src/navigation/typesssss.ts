@@ -13,22 +13,26 @@ export type BottomTabNavigatorParamList = {
   Notifications: undefined;
   MyProfile: { userId: string };
 };
+export type SearchTabNavigatorParamList = {
+  User: undefined;
+  Post: undefined;
+};
 
-export type MyProfileNavigationProp = BottomTabNavigationProp<BottomTabNavigatorParamList,'MyProfile'>
-export type MyProfileRouteProp = RouteProp<BottomTabNavigatorParamList,'MyProfile'>
+export type MyProfileNavigationProp = BottomTabNavigationProp<BottomTabNavigatorParamList, 'MyProfile'>
+export type MyProfileRouteProp = RouteProp<BottomTabNavigatorParamList, 'MyProfile'>
 
 export type HomeStackNavigatorParamList = {
   Feed: undefined;
   UserProfile: { userId: string };
 };
 
-export type UserProfileNavigationProp = NativeStackNavigationProp<HomeStackNavigatorParamList,'UserProfile'>
-export type FeedNavigationProp = NativeStackNavigationProp<HomeStackNavigatorParamList,'Feed'>
+export type UserProfileNavigationProp = NativeStackNavigationProp<HomeStackNavigatorParamList, 'UserProfile'>
+export type FeedNavigationProp = NativeStackNavigationProp<HomeStackNavigatorParamList, 'Feed'>
 
 export type ProfileStackNavigatorParamList = {
   Profile: undefined;
   EditProfile: undefined;
 };
 
-export type ProfileNavigationProp = NativeStackNavigationProp<ProfileStackNavigatorParamList,'Profile'>
-export type ProfileRouteProp = RouteProp<ProfileStackNavigatorParamList,'Profile'>
+export type ProfileNavigationProp = NativeStackNavigationProp<ProfileStackNavigatorParamList, 'Profile'>
+export type ProfileRouteProp = RouteProp<ProfileStackNavigatorParamList, 'Profile'>

@@ -6,6 +6,7 @@ import BottomTabNavigator from './BottomTabNavigator'
 import { RootNevigatorParamList } from './types'
 import * as Linking from 'expo-linking';
 import { Text } from 'react-native';
+import AuthStackNavigator from './AuthStackNavigator';
 
 const prefix = Linking.createURL('/');
 
@@ -21,10 +22,15 @@ const Navigation = () => {
   return (
     <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
       <Stack.Navigator
-        initialRouteName='Home'
+        initialRouteName='Auth'
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen
+          name="Auth"
+          component={AuthStackNavigator}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Home"
           component={BottomTabNavigator}

@@ -1,8 +1,9 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, Pressable } from 'react-native'
 import React from 'react'
 import {IUser} from '../types/models'
 import { useNavigation } from '@react-navigation/native'
 import { ProfileNavigationProp } from '../navigation/types'
+import SignOutButton from './SignOutButton'
 
 interface IProfileHeader {
   user: IUser
@@ -40,10 +41,11 @@ const ProfileHeader = ({user}:IProfileHeader) => {
       className='font-bold text-lg p-1 border border-1 border-gray-200 rounded-lg flex-1 text-center '
       onPress={() => navigateToEditProfile()}
       > Edit Profile </Text>
-      <Text className='font-bold text-lg p-1 border border-1 border-gray-200 rounded-lg flex-1 text-center '>Another Button</Text>
+      <SignOutButton/>
     </View>
   </View>
   )
 }
+
 
 export default ProfileHeader
