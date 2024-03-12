@@ -1,40 +1,56 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
-import SocialSignInButtons from '../components/SocialSignInButtons';
-import {useNavigation} from '@react-navigation/core';
-import {useForm} from 'react-hook-form';
+import { useNavigation } from '@react-navigation/core';
+import { useForm } from 'react-hook-form';
 import {
   ConfirmEmailNavigationProp,
   ConfirmEmailRouteProp,
 } from '../../../types/navigation';
-import {useRoute} from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import { confirmSignUp, resendSignUpCode, type ConfirmSignUpInput } from 'aws-amplify/auth';
 
-type ConfirmEmailData = {
-  username: string;
-  code: string;
-};
 
 const ConfirmEmailScreen = () => {
   const route = useRoute<ConfirmEmailRouteProp>();
-  const {control, handleSubmit} = useForm<ConfirmEmailData>({
-    defaultValues: {username: route.params.username},
+  const { control, handleSubmit, watch } = useForm<ConfirmSignUpInput>({
+    defaultValues: { username: route.params?.username },
   });
-
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation<ConfirmEmailNavigationProp>();
+  const usrname = watch('username');
 
-  const onConfirmPressed = (data: ConfirmEmailData) => {
-    console.warn(data);
-    navigation.navigate('Sign in');
+  const onConfirmPressed = async ({
+    username,
+    confirmationCode
+  }: ConfirmSignUpInput) => {
+    if(loading) {return};
+    try {
+      setLoading(true)
+      await confirmSignUp({
+        username,
+        confirmationCode
+      });
+       navigation.navigate('Sign in');
+    } catch (error) {
+      Alert.alert('Error confirming sign up', error.message);
+    } finally {
+      setLoading(false)
+    }
   };
 
   const onSignInPress = () => {
     navigation.navigate('Sign in');
   };
 
-  const onResendPress = () => {
-    console.warn('onResendPress');
+  const onResendPress = async () => {
+    try {
+      await resendSignUpCode({ username: usrname });
+      Alert.alert('Check your email', 'The code has been sent');
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
   };
 
   return (
@@ -52,7 +68,7 @@ const ConfirmEmailScreen = () => {
         />
 
         <FormInput
-          name="code"
+          name="confirmationCode"
           control={control}
           placeholder="Enter your confirmation code"
           rules={{
@@ -60,7 +76,7 @@ const ConfirmEmailScreen = () => {
           }}
         />
 
-        <CustomButton text="Confirm" onPress={handleSubmit(onConfirmPressed)} />
+        <CustomButton text={loading ? "Loading..." : "Confirm"} onPress={handleSubmit(onConfirmPressed)} />
 
         <CustomButton
           text="Resend code"

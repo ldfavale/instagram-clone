@@ -1,31 +1,48 @@
+import React from 'react';
 import {
   View,
   Image,
   StyleSheet,
   useWindowDimensions,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Logo from '../../../assets/images/logo.png';
 import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
-import {useNavigation} from '@react-navigation/native';
-import {useForm} from 'react-hook-form';
-import {SignInNavigationProp} from '../../../types/navigation';
+import { useNavigation } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
+import { SignInNavigationProp } from '../../../types/navigation';
+import { signIn, type SignInInput } from 'aws-amplify/auth';
+import { useState } from 'react';
 
-type SignInData = {
-  username: string;
-  password: string;
-};
 
 const SignInScreen = () => {
-  const {height} = useWindowDimensions();
+  const { height } = useWindowDimensions();
   const navigation = useNavigation<SignInNavigationProp>();
+  const { control, handleSubmit, reset } = useForm<SignInInput>();
 
-  const {control, handleSubmit} = useForm<SignInData>();
+  const [loading, setLoading] = useState(false)
 
-  const onSignInPressed = (data: SignInData) => {
-    console.log(data);
+  const onSignInPressed = async ({ username, password }: SignInInput) => {
+    if(loading) {return};
+    try {
+      setLoading(true)
+      await signIn({
+        username, password, options: {
+          authFlowType: "USER_PASSWORD_AUTH",
+        }
+      });
+    } catch (e) {
+      if ((e as Error).name === 'UserNotConfirmedException')
+        navigation.navigate("Confirm email", { username })
+      else
+        Alert.alert('Oops', e.message);
+    } finally {
+      reset();
+      setLoading(false);
+    }
     // validate user
     // navigation.navigate('Home');
   };
@@ -43,7 +60,7 @@ const SignInScreen = () => {
       <View style={styles.root}>
         <Image
           source={Logo}
-          style={[styles.logo, {height: height * 0.3}]}
+          style={[styles.logo, { height: height * 0.3 }]}
           resizeMode="contain"
         />
 
@@ -51,7 +68,7 @@ const SignInScreen = () => {
           name="username"
           placeholder="Username"
           control={control}
-          rules={{required: 'Username is required'}}
+          rules={{ required: 'Username is required' }}
         />
 
         <FormInput
@@ -68,7 +85,7 @@ const SignInScreen = () => {
           }}
         />
 
-        <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)} />
+        <CustomButton text={loading ? "Loading..." : "Sign In"} onPress={handleSubmit(onSignInPressed)} />
 
         <CustomButton
           text="Forgot password?"

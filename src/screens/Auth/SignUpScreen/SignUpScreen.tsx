@@ -1,11 +1,14 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import React from 'react'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
-import {useNavigation} from '@react-navigation/core';
-import {useForm} from 'react-hook-form';
-import {SignUpNavigationProp} from '../../../types/navigation';
+import { useNavigation } from '@react-navigation/core';
+import { useForm } from 'react-hook-form';
+import { SignUpNavigationProp } from '../../../types/navigation';
 import colors from '../../../theme/colors';
+import { signUp } from 'aws-amplify/auth';
+import { useState } from 'react';
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -21,12 +24,34 @@ type SignUpData = {
 };
 
 const SignUpScreen = () => {
-  const {control, handleSubmit, watch} = useForm<SignUpData>();
+  const { control, handleSubmit, watch } = useForm<SignUpData>();
   const pwd = watch('password');
   const navigation = useNavigation<SignUpNavigationProp>();
+  const [loading, setLoading] = useState(false);
 
-  const onRegisterPressed = ({name, email, username, password}: SignUpData) => {
-    navigation.navigate('Confirm email', {username});
+  const onRegisterPressed = async ({ name, email, username, password }: SignUpData) => {
+    if(loading) {return};
+    try {
+      setLoading(true)
+      await signUp({
+        username,
+        password,
+        options: {
+          userAttributes: {
+            email,
+            name
+          },
+          // optional
+          autoSignIn: true // or SignInOptions e.g { authFlowType: "USER_SRP_AUTH" }
+        }
+      });
+      navigation.navigate('Confirm email', { username });
+    } catch (error) {
+      Alert.alert('error signing up:', error.message);
+    } finally {
+      setLoading(false)
+    }
+
   };
 
   const onSignInPress = () => {
@@ -89,7 +114,7 @@ const SignUpScreen = () => {
           placeholder="Email"
           rules={{
             required: 'Email is required',
-            pattern: {value: EMAIL_REGEX, message: 'Email is invalid'},
+            pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
           }}
         />
         <FormInput
@@ -117,7 +142,7 @@ const SignUpScreen = () => {
         />
 
         <CustomButton
-          text="Register"
+          text={loading ? "Loading..." : "Register"}
           onPress={handleSubmit(onRegisterPressed)}
         />
 
