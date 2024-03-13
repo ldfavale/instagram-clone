@@ -10,7 +10,8 @@ interface IProfileHeader {
 }
 
 const ProfileHeader = ({user}:IProfileHeader) => {
-  const navigation = useNavigation<ProfileNavigationProp>()
+  const navigation = useNavigation<ProfileNavigationProp>();
+
   const navigateToEditProfile = () => {
     navigation.navigate('EditProfile')
   }

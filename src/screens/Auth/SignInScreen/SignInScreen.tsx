@@ -22,7 +22,7 @@ const SignInScreen = () => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation<SignInNavigationProp>();
   const { control, handleSubmit, reset } = useForm<SignInInput>();
-
+  
   const [loading, setLoading] = useState(false)
 
   const onSignInPressed = async ({ username, password }: SignInInput) => {
