@@ -20,6 +20,7 @@ const Navigation = () => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
   const { authStatus } = useAuthenticator(context => [context.authStatus]);
 
+  console.log("authStatus => ",authStatus)
   if (authStatus === "configuring") {
     return (
       <View className="flex-1 justify-center items-center">

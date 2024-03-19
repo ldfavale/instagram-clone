@@ -1,0 +1,36 @@
+type Comment @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  comment: String!
+  userID: ID! @index(name: "byUser")
+  postID: ID! @index(name: "byPost")
+}
+
+type Post @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  description: String
+  image: String
+  images: [String!]
+  video: String
+  nofComments: Int!
+  nofLikes: Int!
+  userID: ID! @index(name: "byUser")
+  Likes: [User] @manyToMany(relationName: "PostUser")
+  Comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  image: String
+  bio: String
+  username: String
+  website: AWSURL
+  nofPosts: Int!
+  nofFollowers: Int!
+  nofFollowing: Int!
+  email: AWSEmail!
+  Posts: [Post] @hasMany(indexName: "byUser", fields: ["id"])
+  Comments: [Comment] @hasMany(indexName: "byUser", fields: ["id"])
+  LikedPosts: [Post] @manyToMany(relationName: "PostUser")
+}
+ 
