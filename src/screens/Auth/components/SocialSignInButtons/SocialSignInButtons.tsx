@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CustomButton from '../CustomButton';
 import { signInWithRedirect } from "aws-amplify/auth";
+import { Alert } from 'react-native';
+
+type Provider = 'Facebook' | 'Google'
 
 const SocialSignInButtons = () => {
+
+  const [loading,setLoading] = useState(false);
+
+  const signInWithProvider = async (provider:Provider) => {
+    try {
+      setLoading(true)
+      await signInWithRedirect({ provider });
+     }catch (e) {
+      if ((e as Error).name === 'OAuthSignInException'){
+        Alert.alert('Error','Sorry, An error ocurred when trying to authenticate through '+ provider);
+        console.log(e);
+      }
+      else
+        Alert.alert('Error', e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const onSignInFacebook = () => {
     console.log('onSignInFacebook');
-    signInWithRedirect({ provider: 'Facebook' });
+    signInWithProvider('Facebook'); 
   };
 
   const onSignInGoogle = () => {
     console.log('onSignInGoogle');
-    signInWithRedirect({ provider: 'Google' }); 
+    signInWithProvider('Google'); 
   };
+  
 
   const onSignInApple = () => {
     console.warn('onSignInApple');
