@@ -1,16 +1,23 @@
-import { View, Text, Image, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, Image, TextInput, Pressable } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useForm, Control, Controller } from "react-hook-form"
-import { IUser } from '../types/models'
-import colors from '../theme/colors'
-import user from '../assets/data/user.json'
+import colors from '../../theme/colors'
 import * as ImagePicker from 'expo-image-picker';
+import { useMutation, useQuery } from '@apollo/client'
+import { GetUserQuery, GetUserQueryVariables, UpdateUserMutation, UpdateUserMutationVariables } from '../../API'
+import { getUser } from './queries'
+import { User } from '../../API';
+import Loading from '../../components/Loading';
+import ApiErrorMessage from '../../components/apiErrorMessage';
+import { updateUser } from './queries';
+import { useNavigation } from '@react-navigation/native';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
 
 
 const profile_photo = 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540ldfavale%252Finstagram-clone/ImagePicker/748f0b54-5050-4eef-bdec-09ab4426c83f.jpeg'
 const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 type IEditableUserField = 'name' | 'image' | 'username' | 'website' | 'bio';
-type IEditableUser = Pick<IUser, IEditableUserField>
+type IEditableUser = Pick<User, IEditableUserField>
 
 interface ICustomInput {
   label: string,
@@ -38,7 +45,7 @@ const CustomInput = ({
             <TextInput
               onChangeText={onChange}
               onBlur={onBlur}
-              value={value}
+              value={value || ""}
               placeholder={label}
               multiline
               className="border-b border-b-1 "
@@ -56,18 +63,33 @@ const CustomInput = ({
 }
 
 
+const userSelector = (context) => [context.user];
 const EditProfileScreen = () => {
-  const { control, handleSubmit } = useForm<IEditableUser>({
-    defaultValues: {
-      name: user.name,
-      username: user.username,
-      website: user.website,
-      bio: user.bio
-    }
-  });
+  const { control, handleSubmit, setValue } = useForm<IEditableUser>();
+  const navigation = useNavigation();
+  const { user:loggedUser } = useAuthenticator(userSelector);
+  let userId = loggedUser.userId;
+  const { data, loading, error} = useQuery<GetUserQuery,GetUserQueryVariables>(getUser,{variables: {id: userId}});
+  const user = data?.getUser
+  const [doUpdateUser, {loading:updateLoading, error:updateError}] = useMutation<UpdateUserMutation,UpdateUserMutationVariables>(updateUser);
 
-  const onSubmit = (data: IEditableUser) => {
-    console.log("SUBMIT", data)
+  useEffect(()=>{
+    if(user){
+      setValue("bio", user?.bio)
+      setValue("name", user?.name)
+      setValue("username", user?.username)
+      setValue("website", user?.website)
+      setValue("bio", user?.bio)
+    }
+  },[user])
+
+  const onSubmit = async (formData: IEditableUser) => {
+    console.log("SUBMIT", formData)
+    await doUpdateUser({
+      variables: {input: {id: userId, ...formData}}
+    })
+    console.log("Listo el pollo")
+    navigation.goBack();
   }
 
   const [image, setImage] = useState<null | string>(null);
@@ -85,6 +107,18 @@ const EditProfileScreen = () => {
       setImage(result.assets[0].uri);
     }
   };
+
+  if(loading || updateLoading){
+    return <Loading/>;
+  }
+  
+  if(error || updateError){
+    return <ApiErrorMessage 
+      title='Error fetching or updating User Data' 
+      message={error?.message || updateError?.message}
+      onRetry={()=>{}}
+    />;
+  }
 
   return (
     <View className="p-6 space-y-8">
@@ -138,9 +172,13 @@ const EditProfileScreen = () => {
         />
       </View>
       <View className="items-center ">
-        <Text
+        <Pressable
           className="text-primary font-semibold text-base"
-          onPress={handleSubmit(onSubmit)}>Submit</Text>
+          onPress={handleSubmit(onSubmit)}>
+            <Text>
+              Submit
+            </Text>
+        </Pressable>
       </View>
 
     </View>
