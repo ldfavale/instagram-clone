@@ -35,6 +35,9 @@ const AWS = require('aws-sdk');
       __typename: 'User',
       createdAt: dateStr,
       updatedAt: dateStr,
+      nofFollowers: 0,
+      nofFollowing: 0,
+      nofPosts: 0,
       _lastChangedAt: timestamp,
       _version: 1
 

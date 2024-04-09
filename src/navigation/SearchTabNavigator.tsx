@@ -5,6 +5,7 @@ import CommentScreen from '../screens/CommentScreen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import colors from '../theme/colors';
 import { SearchTabNavigatorParamList } from './types';
+import UserSearchScreen from '../screens/UserSearchScreen';
 
 const Tab = createMaterialTopTabNavigator<SearchTabNavigatorParamList>();
 
@@ -21,7 +22,7 @@ const SearchTabNavigator = () => {
         }
       }}
     >
-      <Tab.Screen name="User" component={HomeScreen} />
+      <Tab.Screen name="User" component={UserSearchScreen} />
       <Tab.Screen name="Post" component={CommentScreen} />
     </Tab.Navigator>
   );

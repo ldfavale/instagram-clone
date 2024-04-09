@@ -4,23 +4,24 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { IPost } from '../types/models'
-import Comment from './Comment';
+import Comment from './FeedComment';
 import colors from '../theme/colors';
 import DoublePressable from './DoublePressable';
 import Carousel from './Carousel';
 import VideoPlayer from './VideoPlayer';
 import { useNavigation } from '@react-navigation/native';
 import { FeedNavigationProp } from '../navigation/types';
+import { Post } from '../API'
+import placeholder from '../assets/leo_profile.png'
 
 interface IFeedPost {
-  post: IPost,
+  post: Post,
   isVisible: boolean
 }
 
 
 
-function Post({ post, isVisible }: IFeedPost) {
+function FeedPost({ post, isVisible }: IFeedPost) {
   const [postLiked, setPostLiked] = useState(false)
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const toggleLike = () => setPostLiked(v => !v)
@@ -28,7 +29,9 @@ function Post({ post, isVisible }: IFeedPost) {
   const navigation = useNavigation<FeedNavigationProp>()
 
   const navigateToUser = () => {
-    navigation.navigate('UserProfile', {userId: post.user.id})
+    if(post.User?.id){
+      navigation.navigate('UserProfile', {userId: post.User?.id})
+    }
   }
 
   const getPostContent = () => {
@@ -41,14 +44,14 @@ function Post({ post, isVisible }: IFeedPost) {
           />
         </DoublePressable>
       )
-    else if (post.images)
+    else if (post.images && post.images.length)
       return <Carousel images={post.images} onDoublePress={toggleLike} />
     else if (post.video)
       return <VideoPlayer uri={post.video} shouldPlay={isVisible} />
   }
 
   const content = getPostContent()
-
+  const profile_image = post.User?.image ? { uri: post.User?.image} : placeholder;
 
   return (
     <>
@@ -57,10 +60,10 @@ function Post({ post, isVisible }: IFeedPost) {
         {/* Header*/}
         <View className=" flex flex-row items-center space-x-4 p-3 ">
           <Image
-            source={{ uri: post.user.image }}
+            source={profile_image}
             className="w-10 aspect-square rounded-full"
           />
-          <Text className=" font-bold flex-1 text-lg" onPress={navigateToUser}>{post.user.username}</Text>
+          <Text className=" font-bold flex-1 text-lg" onPress={navigateToUser}>{post.User?.username || post.User?.name}</Text>
           <Entypo name="dots-three-horizontal" size={20} color="gray" />
         </View>
 
@@ -100,11 +103,11 @@ function Post({ post, isVisible }: IFeedPost) {
           <Text>Les gusta a <Text className="font-bold">ldfavale</Text> y a <Text className="font-bold">{post.nofLikes - 1} personas mas</Text></Text>
         </View>
         <View className="px-3 mb-1">
-          <Text numberOfLines={isDescriptionExpanded ? 0 : 3}><Text className="font-bold">{post.user.username}</Text> {post.description}</Text>
+          <Text numberOfLines={isDescriptionExpanded ? 0 : 3}><Text className="font-bold">{post.User?.username}</Text> {post.description}</Text>
           <Text className="text-gray-500" onPress={toggleDescriptionExpanded}>{isDescriptionExpanded ? "Ver Menos" : "Ver más"}</Text>
         </View >
-        {post.comments.map((comment) => {
-          return <Comment comment={comment} user={post.user} key={comment.id} />
+        {(post.Comments?.items || []).map((comment) => {
+          return comment && <Comment comment={comment}  key={comment?.id} />
         })}
         <View className="px-3 mb-[2px]">
           <Text className="text-sm text-gray-500">Ver los {post.nofComments} comentarios</Text>
@@ -117,4 +120,4 @@ function Post({ post, isVisible }: IFeedPost) {
   )
 }
 
-export default Post
+export default FeedPost

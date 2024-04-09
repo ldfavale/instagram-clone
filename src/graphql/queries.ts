@@ -25,6 +25,18 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -38,6 +50,29 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -62,6 +97,34 @@ export const listComments = /* GraphQL */ `query ListComments(
       comment
       userID
       postID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Post {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -93,6 +156,34 @@ export const commentsByUserID = /* GraphQL */ `query CommentsByUserID(
       comment
       userID
       postID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Post {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -124,6 +215,34 @@ export const commentsByPostID = /* GraphQL */ `query CommentsByPostID(
       comment
       userID
       postID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Post {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -157,15 +276,44 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
     Likes {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -190,6 +338,29 @@ export const listPosts = /* GraphQL */ `query ListPosts(
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -222,6 +393,29 @@ export const postsByUserID = /* GraphQL */ `query PostsByUserID(
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -247,14 +441,44 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     nofFollowing
     email
     Posts {
+      items {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     LikedPosts {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -281,6 +505,18 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -304,6 +540,29 @@ export const getPostUser = /* GraphQL */ `query GetPostUser($id: ID!) {
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -319,6 +578,18 @@ export const getPostUser = /* GraphQL */ `query GetPostUser($id: ID!) {
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -342,6 +613,34 @@ export const listPostUsers = /* GraphQL */ `query ListPostUsers(
       id
       postId
       userId
+      post {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      user {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -372,6 +671,34 @@ export const postUsersByPostId = /* GraphQL */ `query PostUsersByPostId(
       id
       postId
       userId
+      post {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      user {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -402,6 +729,34 @@ export const postUsersByUserId = /* GraphQL */ `query PostUsersByUserId(
       id
       postId
       userId
+      post {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      user {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename

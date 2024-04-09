@@ -1,16 +1,16 @@
 import { View, Text, Image, Pressable } from 'react-native'
 import React, { useState } from 'react'
-import { IComment } from '../types/models'
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../theme/colors';
+import { Comment } from '../API';
 
 
 interface IFeedComment {
-  comment: IComment,
-  includeDetails: boolean
+  comment: Comment,
+  includeDetails?: boolean
 }
 
-const Comment = ({ comment, includeDetails = false }: IFeedComment) => {
+const FeedComment = ({ comment, includeDetails = false }: IFeedComment) => {
 
   const [liked, setLiked] = useState(false)
   const toggleLike = () => setLiked(v => !v)
@@ -18,11 +18,11 @@ const Comment = ({ comment, includeDetails = false }: IFeedComment) => {
   return (
     <View className="flex flex-row px-3 pb-1 space-x-3 ">
       {includeDetails &&
-        <Image source={{ uri: comment.user.image }} className="h-10 w-10 rounded-full" />
+        <Image source={{ uri: comment.User?.image }} className="h-10 w-10 rounded-full" />
       }
 
       <View className="flex-1">
-        <Text><Text className="font-bold">{comment.user.username}</Text> {comment.comment} </Text>
+        <Text><Text className="font-bold">{comment.User?.username}</Text> {comment.comment} </Text>
         {includeDetails &&
         <View className="flex-row space-x-3 ">
           <Text className="text-gray-500">2d</Text>
@@ -44,4 +44,4 @@ const Comment = ({ comment, includeDetails = false }: IFeedComment) => {
   )
 }
 
-export default Comment
+export default FeedComment

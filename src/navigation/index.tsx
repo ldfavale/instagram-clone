@@ -5,9 +5,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from './BottomTabNavigator'
 import { RootNevigatorParamList } from './types'
 import * as Linking from 'expo-linking';
-import { ActivityIndicator, Text, View } from 'react-native';
 import AuthStackNavigator from './AuthStackNavigator';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import Loading from '../components/Loading';
 
 const prefix = Linking.createURL('/');
 
@@ -23,15 +23,13 @@ const Navigation = () => {
   console.log("authStatus => ",authStatus)
   if (authStatus === "configuring") {
     return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator />
-      </View>
+      <Loading/>
     )
   }
 
 
   return (
-    <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
+    <NavigationContainer linking={linking} fallback={<Loading/>}>
       <Stack.Navigator
         initialRouteName='Auth'
         screenOptions={{

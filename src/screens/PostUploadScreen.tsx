@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, ActivityIndicator } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { Camera, CameraPictureOptions, CameraRecordingOptions, CameraType, FlashMode, VideoQuality } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -37,7 +37,7 @@ const PostUploadScreen = () => {
   }, [])
 
   if (hasPermissions === null) {
-    return <Text>Loading...</Text>
+    return <ActivityIndicator size="large" />;
   }
   if (hasPermissions === false) {
     return <Text>No access to the camera</Text>

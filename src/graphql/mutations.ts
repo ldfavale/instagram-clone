@@ -28,6 +28,18 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -41,6 +53,29 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -74,6 +109,18 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -87,6 +134,29 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -120,6 +190,18 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -133,6 +215,29 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -170,15 +275,44 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
     Likes {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -215,15 +349,44 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
     Likes {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -260,15 +423,44 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
     Likes {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -297,14 +489,44 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     nofFollowing
     email
     Posts {
+      items {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     LikedPosts {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -333,14 +555,44 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     nofFollowing
     email
     Posts {
+      items {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     LikedPosts {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -369,14 +621,44 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     nofFollowing
     email
     Posts {
+      items {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     LikedPosts {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -406,6 +688,29 @@ export const createPostUser = /* GraphQL */ `mutation CreatePostUser(
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -421,6 +726,18 @@ export const createPostUser = /* GraphQL */ `mutation CreatePostUser(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -451,6 +768,29 @@ export const updatePostUser = /* GraphQL */ `mutation UpdatePostUser(
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -466,6 +806,18 @@ export const updatePostUser = /* GraphQL */ `mutation UpdatePostUser(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -496,6 +848,29 @@ export const deletePostUser = /* GraphQL */ `mutation DeletePostUser(
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -511,6 +886,18 @@ export const deletePostUser = /* GraphQL */ `mutation DeletePostUser(
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename

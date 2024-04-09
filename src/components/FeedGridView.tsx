@@ -1,11 +1,9 @@
 import React from 'react'
-import { View, Text, Image, FlatList } from 'react-native'
-import user from '../assets/data/user.json'
-import ProfileHeader from '../components/ProfileHeader'
-import { IPost } from '../types/models'
+import { View, Image, FlatList } from 'react-native'
+import { Post } from '../API'
 
 interface IFeedGridView {
-  data: IPost[],
+  data: (Post | null)[] | undefined,
   listHeaderComponent?: React.ComponentType<any> | React.ReactElement | null | undefined;
 
 }
@@ -15,7 +13,7 @@ const FeedGridView = ({ data, listHeaderComponent }: IFeedGridView) => {
     <View className="">
       <FlatList
         data={data}
-        renderItem={({ item }) => <View className="p-[1] max-w-[33.33%] flex-1  "><Image source={{ uri: item.image || item.images[0] }} className='aspect-square' /></View>}
+        renderItem={({ item }) => <View className="p-[1] max-w-[33.33%] flex-1  "><Image source={{ uri: item?.image || item?.images?.[0] }} className='aspect-square' /></View>}
         numColumns={3}
         className=""
         ListHeaderComponent={listHeaderComponent}

@@ -25,6 +25,18 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -38,6 +50,29 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -68,6 +103,18 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -81,6 +128,29 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -111,6 +181,18 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -124,6 +206,29 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -158,15 +263,44 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
     Likes {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -200,15 +334,44 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
     Likes {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -242,15 +405,44 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
     }
     Likes {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -276,14 +468,44 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     nofFollowing
     email
     Posts {
+      items {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     LikedPosts {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -309,14 +531,44 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     nofFollowing
     email
     Posts {
+      items {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     LikedPosts {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -342,14 +594,44 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     nofFollowing
     email
     Posts {
+      items {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     Comments {
+      items {
+        id
+        comment
+        userID
+        postID
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
     LikedPosts {
+      items {
+        id
+        postId
+        userId
+        createdAt
+        updatedAt
+        __typename
+      }
       nextToken
       __typename
     }
@@ -376,6 +658,29 @@ export const onCreatePostUser = /* GraphQL */ `subscription OnCreatePostUser($fi
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -391,6 +696,18 @@ export const onCreatePostUser = /* GraphQL */ `subscription OnCreatePostUser($fi
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -418,6 +735,29 @@ export const onUpdatePostUser = /* GraphQL */ `subscription OnUpdatePostUser($fi
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -433,6 +773,18 @@ export const onUpdatePostUser = /* GraphQL */ `subscription OnUpdatePostUser($fi
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -460,6 +812,29 @@ export const onDeletePostUser = /* GraphQL */ `subscription OnDeletePostUser($fi
       nofComments
       nofLikes
       userID
+      User {
+        id
+        name
+        image
+        bio
+        username
+        website
+        nofPosts
+        nofFollowers
+        nofFollowing
+        email
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -475,6 +850,18 @@ export const onDeletePostUser = /* GraphQL */ `subscription OnDeletePostUser($fi
       nofFollowers
       nofFollowing
       email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename

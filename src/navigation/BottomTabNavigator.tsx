@@ -1,9 +1,7 @@
-import { View, Text, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
 import logo from '../assets/images/logo.png'
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import colors from '../theme/colors';
