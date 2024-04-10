@@ -1,17 +1,19 @@
-import { View, Text, Image, TextInput, Pressable } from 'react-native'
+import { View, Text, Image, TextInput, Pressable, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useForm, Control, Controller } from "react-hook-form"
 import colors from '../../theme/colors'
 import * as ImagePicker from 'expo-image-picker';
 import { useMutation, useQuery } from '@apollo/client'
-import { GetUserQuery, GetUserQueryVariables, UpdateUserMutation, UpdateUserMutationVariables } from '../../API'
-import { getUser } from './queries'
+import { DeleteUserMutation, DeleteUserMutationVariables, GetUserQuery, GetUserQueryVariables, UpdateUserMutation, UpdateUserMutationVariables } from '../../API'
+import { deleteUser as deleteUserMutation, getUser } from './queries'
 import { User } from '../../API';
 import Loading from '../../components/Loading';
 import ApiErrorMessage from '../../components/apiErrorMessage';
 import { updateUser } from './queries';
 import { useNavigation } from '@react-navigation/native';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import { AuthUser, deleteUser } from 'aws-amplify/auth';
+
 
 
 const profile_photo = 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540ldfavale%252Finstagram-clone/ImagePicker/748f0b54-5050-4eef-bdec-09ab4426c83f.jpeg'
@@ -63,7 +65,7 @@ const CustomInput = ({
 }
 
 
-const userSelector = (context) => [context.user];
+const userSelector = (context: { user: AuthUser; }) => [context.user];
 const EditProfileScreen = () => {
   const { control, handleSubmit, setValue } = useForm<IEditableUser>();
   const navigation = useNavigation();
@@ -72,6 +74,7 @@ const EditProfileScreen = () => {
   const { data, loading, error} = useQuery<GetUserQuery,GetUserQueryVariables>(getUser,{variables: {id: userId}});
   const user = data?.getUser
   const [doUpdateUser, {loading:updateLoading, error:updateError}] = useMutation<UpdateUserMutation,UpdateUserMutationVariables>(updateUser);
+  const [doDeleteUser, {loading:deleteLoading, error:deleteError}] = useMutation<DeleteUserMutation,DeleteUserMutationVariables>(deleteUserMutation);
 
   useEffect(()=>{
     if(user){
@@ -108,17 +111,43 @@ const EditProfileScreen = () => {
     }
   };
 
-  if(loading || updateLoading){
+  if(loading || updateLoading || deleteLoading ){
     return <Loading/>;
   }
   
-  if(error || updateError){
+  if(error || updateError || deleteError){
     return <ApiErrorMessage 
       title='Error fetching or updating User Data' 
-      message={error?.message || updateError?.message}
+      message={error?.message || updateError?.message  || deleteError?.message}
       onRetry={()=>{}}
     />;
   }
+
+  const confirmDeleting = () => {
+    Alert.alert("Are you sure?","Deleting your user profile is permanent",[
+      {
+        text: "Cancel",
+        style: "cancel"
+      },
+      {
+        text: "Yes Delete",
+        style: "destructive",
+        onPress: handleDeleteUser
+
+      }
+    ])
+  };
+
+
+  async function handleDeleteUser() {
+    try {
+      await doDeleteUser({variables: {input: { id: userId}}})
+      await deleteUser();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
 
   return (
     <View className="p-6 space-y-8">
@@ -177,6 +206,15 @@ const EditProfileScreen = () => {
           onPress={handleSubmit(onSubmit)}>
             <Text>
               Submit
+            </Text>
+        </Pressable>
+      </View>
+      <View className="items-center ">
+        <Pressable
+          
+          onPress={() => confirmDeleting()}>
+            <Text className="text-accent font-semibold text-base">
+              Delete
             </Text>
         </Pressable>
       </View>

@@ -15,7 +15,7 @@ export const getUser  = gql`query GetUser($id: ID!) {
 }
 `
 
-export const updateUser = /* GraphQL */ gql`mutation UpdateUser(
+export const updateUser = gql`mutation UpdateUser(
   $input: UpdateUserInput!
   $condition: ModelUserConditionInput
 ) {
@@ -32,6 +32,17 @@ export const updateUser = /* GraphQL */ gql`mutation UpdateUser(
   }
 }
 `
-
+export const deleteUser = gql`mutation DeleteUser(
+  $input: DeleteUserInput!
+  $condition: ModelUserConditionInput
+) {
+  deleteUser(input: $input, condition: $condition) {
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+`
 
   
