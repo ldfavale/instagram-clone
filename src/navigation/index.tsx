@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from './BottomTabNavigator'
-import { RootNevigatorParamList } from './types'
+import { RootNavigatorParamList } from './types'
 import * as Linking from 'expo-linking';
 import AuthStackNavigator from './AuthStackNavigator';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
@@ -13,7 +13,7 @@ const prefix = Linking.createURL('/');
 
 
 
-const Stack = createNativeStackNavigator<RootNevigatorParamList>();
+const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 
 const Navigation = () => {
   const linking = { prefixes: [prefix] };
@@ -21,7 +21,7 @@ const Navigation = () => {
   const { authStatus } = useAuthenticator(context => [context.authStatus]);
 
   console.log("authStatus => ",authStatus)
-  if (authStatus === "configuring") {
+  if (authStatus !== "authenticated") {
     return (
       <Loading/>
     )
