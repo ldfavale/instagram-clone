@@ -4,7 +4,7 @@ import { listUsers } from './queries'
 import { useQuery } from '@apollo/client'
 import ApiErrorMessage from '../../components/apiErrorMessage'
 import Loading from '../../components/Loading'
-import { ListUsersQuery, ListUsersQueryVariables, User } from '../../API'
+import { ListUsersQuery, ListUsersQueryVariables } from '../../API'
 
 const UserSearchScreen = () => {
     const { data, loading, error, refetch} = useQuery<ListUsersQuery,ListUsersQueryVariables>(listUsers)
@@ -26,10 +26,10 @@ const UserSearchScreen = () => {
 
 
 
-const UserListItem = ({user}) => {
+const UserListItem = (user) => {
   return (
     <View className="flex flex-row items-center p-2 space-x-3">
-        <Image source={{uri: user.item.image}} className="w-10 h-10 rounded-full"/>
+        <Image source={{uri: user}} className="w-10 h-10 rounded-full"/>
         <View className="flex-1 ">
             <Text className="flex-1 font-bold">{user.item.name}</Text>
             <Text className=" ">{user.item.username}</Text>

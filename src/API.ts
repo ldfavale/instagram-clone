@@ -1830,6 +1830,48 @@ export type ListUsersQuery = {
   } | null,
 };
 
+export type UsersByUsernameQueryVariables = {
+  username: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type UsersByUsernameQuery = {
+  usersByUsername?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      name: string,
+      image?: string | null,
+      bio?: string | null,
+      username?: string | null,
+      website?: string | null,
+      nofPosts: number,
+      nofFollowers: number,
+      nofFollowing: number,
+      email: string,
+      Posts?:  {
+        __typename: "ModelPostConnection",
+        nextToken?: string | null,
+      } | null,
+      Comments?:  {
+        __typename: "ModelCommentConnection",
+        nextToken?: string | null,
+      } | null,
+      LikedPosts?:  {
+        __typename: "ModelPostUserConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetPostUserQueryVariables = {
   id: string,
 };

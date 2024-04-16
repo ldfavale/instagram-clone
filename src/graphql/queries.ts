@@ -526,6 +526,55 @@ export const listUsers = /* GraphQL */ `query ListUsers(
   }
 }
 ` as GeneratedQuery<APITypes.ListUsersQueryVariables, APITypes.ListUsersQuery>;
+export const usersByUsername = /* GraphQL */ `query UsersByUsername(
+  $username: String!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  usersByUsername(
+    username: $username
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      image
+      bio
+      username
+      website
+      nofPosts
+      nofFollowers
+      nofFollowing
+      email
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      LikedPosts {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UsersByUsernameQueryVariables,
+  APITypes.UsersByUsernameQuery
+>;
 export const getPostUser = /* GraphQL */ `query GetPostUser($id: ID!) {
   getPostUser(id: $id) {
     id

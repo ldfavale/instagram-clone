@@ -1,9 +1,10 @@
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
+import { AuthUser } from "aws-amplify/auth";
 import React from "react";
 import { Pressable, Text } from "react-native";
 
 
-const userSelector = (context) => [context.user];
+const userSelector = (context: { user: AuthUser; }) => [context.user];
 
 const SignOutButton = () => {
   const { user, signOut } = useAuthenticator(userSelector);

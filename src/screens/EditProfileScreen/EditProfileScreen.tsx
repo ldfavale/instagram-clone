@@ -1,126 +1,62 @@
-import { View, Text, Image, TextInput, Pressable, Alert } from 'react-native'
+import { View, Text, Image, Pressable, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useForm, Control, Controller } from "react-hook-form"
-import colors from '../../theme/colors'
+import { useForm } from "react-hook-form"
 import * as ImagePicker from 'expo-image-picker';
-import { useMutation, useQuery } from '@apollo/client'
-import { DeleteUserMutation, DeleteUserMutationVariables, GetUserQuery, GetUserQueryVariables, UpdateUserMutation, UpdateUserMutationVariables } from '../../API'
-import { deleteUser as deleteUserMutation, getUser } from './queries'
-import { User } from '../../API';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { DeleteUserMutation, DeleteUserMutationVariables, GetUserQuery, GetUserQueryVariables, UpdateUserMutation, UpdateUserMutationVariables, UsersByUsernameQuery, UsersByUsernameQueryVariables } from '../../API'
+import { deleteUser as deleteUserMutation, getUser, usersByUsername } from './queries'
 import Loading from '../../components/Loading';
 import ApiErrorMessage from '../../components/apiErrorMessage';
 import { updateUser } from './queries';
 import { useNavigation } from '@react-navigation/native';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { AuthUser, deleteUser } from 'aws-amplify/auth';
+import DEFAULT_USER_IMAGE from '../../assets/images/default_user.jpg'
+import { IEditableUser } from '../../components/CustomInput';
+import CustomInput from '../../components/CustomInput';
 
 
-
-const profile_photo = 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540ldfavale%252Finstagram-clone/ImagePicker/748f0b54-5050-4eef-bdec-09ab4426c83f.jpeg'
 const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
-type IEditableUserField = 'name' | 'image' | 'username' | 'website' | 'bio';
-type IEditableUser = Pick<User, IEditableUserField>
-
-interface ICustomInput {
-  label: string,
-  multiline?: boolean,
-  control: Control<IEditableUser, object>,
-  name: IEditableUserField,
-  rules?: {}
-}
-const CustomInput = ({
-  name,
-  control,
-  label,
-  multiline = false,
-  rules = {}
-}: ICustomInput) => {
-  return (
-    <Controller
-      control={control}
-      name={name}
-      rules={rules}
-      render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-        <View className="flex flex-row items-center p-4 space-x-6  w-full">
-          <Text className=" text-grey w-1/4" >{label}</Text>
-          <View className="flex-1">
-            <TextInput
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value || ""}
-              placeholder={label}
-              multiline
-              className="border-b border-b-1 "
-              style={{ borderColor: error ? colors.accent : colors.border }}
-            />
-            {error && <Text className="text-accent" >{error.type}</Text>}
-          </View>
-        </View>
-
-      )}
-
-    />
-
-  )
-}
-
 
 const userSelector = (context: { user: AuthUser; }) => [context.user];
 const EditProfileScreen = () => {
-  const { control, handleSubmit, setValue } = useForm<IEditableUser>();
   const navigation = useNavigation();
+  const { control, handleSubmit, setValue } = useForm<IEditableUser>();
+  const [image, setImage] = useState<null | string>(null);
+
+   // Defining Mutations
+   const [doUpdateUser, {loading:updateLoading, error:updateError}] = useMutation<UpdateUserMutation,UpdateUserMutationVariables>(updateUser);
+   const [doDeleteUser, {loading:deleteLoading, error:deleteError}] = useMutation<DeleteUserMutation,DeleteUserMutationVariables>(deleteUserMutation);
+ 
+
+  // Getting Info from Authenticated user
   const { user:loggedUser } = useAuthenticator(userSelector);
   let userId = loggedUser.userId;
   const { data, loading, error} = useQuery<GetUserQuery,GetUserQueryVariables>(getUser,{variables: {id: userId}});
+  const [getUsersByUsername] = useLazyQuery<UsersByUsernameQuery,UsersByUsernameQueryVariables>(usersByUsername);
   const user = data?.getUser
-  const [doUpdateUser, {loading:updateLoading, error:updateError}] = useMutation<UpdateUserMutation,UpdateUserMutationVariables>(updateUser);
-  const [doDeleteUser, {loading:deleteLoading, error:deleteError}] = useMutation<DeleteUserMutation,DeleteUserMutationVariables>(deleteUserMutation);
+  const uri = image || user?.image
 
+ // Setting form with the data
   useEffect(()=>{
     if(user){
       setValue("bio", user?.bio)
       setValue("name", user?.name)
       setValue("username", user?.username)
       setValue("website", user?.website)
-      setValue("bio", user?.bio)
     }
   },[user])
 
+
+  // Handle CRUD Operations
+
   const onSubmit = async (formData: IEditableUser) => {
-    console.log("SUBMIT", formData)
     await doUpdateUser({
       variables: {input: {id: userId, ...formData}}
     })
-    console.log("Listo el pollo")
-    navigation.goBack();
-  }
-
-  const [image, setImage] = useState<null | string>(null);
-
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+    if(navigation.canGoBack()){
+      navigation.goBack();
     }
-  };
-
-  if(loading || updateLoading || deleteLoading ){
-    return <Loading/>;
-  }
-  
-  if(error || updateError || deleteError){
-    return <ApiErrorMessage 
-      title='Error fetching or updating User Data' 
-      message={error?.message || updateError?.message  || deleteError?.message}
-      onRetry={()=>{}}
-    />;
   }
 
   const confirmDeleting = () => {
@@ -147,12 +83,65 @@ const EditProfileScreen = () => {
       console.log(error);
     }
   }
+
+  
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  //Validation
+  const validateUsername = async (username: string) => {
+    try {
+      const response = await  getUsersByUsername({variables: {username}})
+      console.log(response)
+      if(response.error){
+        Alert.alert("Failed to fetch username")
+        return "Failed to fetch username"
+      }
+      const users = response.data?.usersByUsername?.items
+      const isNotTakenByMyself = !users?.map(u=>u?.id).includes(user?.id)
+      if(users && users.length > 0 && isNotTakenByMyself){
+        return "Username is already taken"
+      }
+    } catch (e) {
+      Alert.alert("Failed to fetch username")
+      console.log("Failed to fetch username", e);
+    }
+    return true
+  }
+
+  // Displaying 
+
+  if(loading || updateLoading || deleteLoading ){
+    return <Loading/>;
+  }
+  
+  if(error || updateError || deleteError){
+    return <ApiErrorMessage 
+      title='Error fetching or updating User Data' 
+      message={error?.message || updateError?.message  || deleteError?.message}
+      onRetry={()=>{}}
+    />;
+  }
+
+  
   
 
   return (
     <View className="p-6 space-y-8">
       <View className="flex items-center space-y-4">
-        <Image source={{uri: image || profile_photo}} className="aspect-square h-24 rounded-full" />
+        <Image source={uri ? { uri } : DEFAULT_USER_IMAGE} className="aspect-square h-24 rounded-full" />
         <Text className="text-primary" onPress={pickImage} >Change profile photo</Text>
       </View>
       <View className="w-full ">
@@ -173,7 +162,8 @@ const EditProfileScreen = () => {
             minLength: {
               value: 3,
               message: "Username Should be more than 3 character"
-            }
+            },
+            validate: validateUsername,
           }}
         />
         <CustomInput

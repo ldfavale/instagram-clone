@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { ProfileNavigationProp } from '../navigation/types'
 import SignOutButton from './SignOutButton'
 import { User } from '../API'
+import default_user_image from '../assets/images/default_user.jpg'
 
 interface IProfileHeader {
   user: User | undefined | null
@@ -16,27 +17,28 @@ const ProfileHeader = ({user}:IProfileHeader) => {
   const navigateToEditProfile = () => {
     navigation.navigate('EditProfile')
   }
-
+  const uri = user?.image 
+  navigation.setOptions({title: user?.username || "Profile"})
   return (
     <View className='p-6 space-y-4'>
     <View className="flex-row items-center justify-between  pt-6" >
-      <Image source={{ uri: user.image }} className="h-24 w-24 rounded-full" />
+      <Image source={uri ? { uri } : default_user_image} className="h-24 w-24 rounded-full" />
       <View className=" justify-center items-center ">
-        <Text className='font-bold text-lg'>{user.Posts?.items.length}</Text>
+        <Text className='font-bold text-lg'>{user?.Posts?.items.length}</Text>
         <Text className='text-grey text-base'>Posts</Text>
       </View>
       <View className=" justify-center items-center ">
-        <Text className='font-bold text-lg'>{user.nofFollowers}</Text>
+        <Text className='font-bold text-lg'>{user?.nofFollowers}</Text>
         <Text className='text-grey text-base'>Followers</Text>
       </View>
       <View className="justify-center items-center">
-        <Text className='font-bold text-lg'>{user.nofFollowing}</Text>
+        <Text className='font-bold text-lg'>{user?.nofFollowing}</Text>
         <Text className='text-grey text-base'>Following</Text>
       </View>
     </View>
     <View className=''>
-      <Text className='font-bold text-base'>{user.username}</Text>
-      <Text className='text-grey text-base leading-5'>{user.bio}</Text>
+      <Text className='font-bold text-base'>{user?.username}</Text>
+      <Text className='text-grey text-base leading-5'>{user?.bio}</Text>
     </View>
     <View className='flex-row w-full space-x-4'>
       <Text

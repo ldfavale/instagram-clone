@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ProfileHeader from '../../components/ProfileHeader'
 import FeedGridView from '../../components/FeedGridView'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -9,8 +9,9 @@ import Loading from '../../components/Loading'
 import ApiErrorMessage from '../../components/apiErrorMessage'
 import { GetUserQuery, GetUserQueryVariables } from '../../API'
 import { useAuthenticator } from '@aws-amplify/ui-react-native'
+import { AuthUser } from 'aws-amplify/auth'
 
-const userSelector = (context) => [context.user];
+const userSelector = (context: { user: AuthUser; }) => [context.user];
 
 const ProfileScreen = () => {
   const route = useRoute<ProfileRouteProp | MyProfileRouteProp>();
