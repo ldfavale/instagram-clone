@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
-import SocialSignInButtons from '../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/core';
 import { useForm } from 'react-hook-form';
-import { ForgotPasswordNavigationProp } from '../../../types/navigation';
-import { resetPassword, type ResetPasswordOutput } from 'aws-amplify/auth';
+import { ForgotPasswordNavigationProp } from '../../../navigation/types';
+import { resetPassword } from 'aws-amplify/auth';
 
 type ForgotPasswordData = {
   username: string;
@@ -24,8 +23,8 @@ const ForgotPasswordScreen = () => {
       const { nextStep } = await resetPassword({ username });
       Alert.alert('Check your email', `We've sent the code to: ${nextStep.codeDeliveryDetails.destination}`)
       navigation.navigate('New password');
-    } catch (error) {
-      Alert.alert('Error', error.message)
+    } catch (e) {
+      Alert.alert('Error', (e as Error).message)
     } finally {
       setLoading(false)
     }

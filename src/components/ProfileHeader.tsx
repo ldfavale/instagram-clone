@@ -1,6 +1,5 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
-import {IUser} from '../types/models'
 import { useNavigation } from '@react-navigation/native'
 import { ProfileNavigationProp } from '../navigation/types'
 import SignOutButton from './SignOutButton'

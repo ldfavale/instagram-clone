@@ -54,6 +54,9 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
       }
     ])
   }
+  const onEditButtonPressed = () => {
+    navigation.navigate("EditPost", {postId: post.id});
+  }
 
   const submitPostDeletion = async () => {
     if(isMyPost){
@@ -100,7 +103,9 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
           <Text className=" font-bold flex-1 text-lg" onPress={navigateToUser}>{post.User?.username || post.User?.name}</Text>
             <PostMenu  
             isMyPost={isMyPost}
-            onDeleteButtonPressed={onDeleteButtonPressed} />
+            onDeleteButtonPressed={onDeleteButtonPressed} 
+            onEditButtonPressed={onEditButtonPressed} 
+            />
         </View>
 
         {/* Body*/}

@@ -13,7 +13,7 @@ import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { SignInNavigationProp } from '../../../types/navigation';
+import { SignInNavigationProp } from '../../../navigation/types';
 import { signIn, type SignInInput } from 'aws-amplify/auth';
 import { useState } from 'react';
 
@@ -38,7 +38,7 @@ const SignInScreen = () => {
       if ((e as Error).name === 'UserNotConfirmedException')
         navigation.navigate("Confirm email", { username })
       else
-        Alert.alert('Oops', e.message);
+        Alert.alert('Oops', (e as Error).message);
     } finally {
       reset();
       setLoading(false);

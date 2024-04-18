@@ -5,7 +5,7 @@ import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/core';
 import { useForm } from 'react-hook-form';
-import { SignUpNavigationProp } from '../../../types/navigation';
+import { SignUpNavigationProp } from '../../../navigation/types';
 import colors from '../../../theme/colors';
 import { signUp } from 'aws-amplify/auth';
 import { useState } from 'react';
@@ -46,8 +46,8 @@ const SignUpScreen = () => {
         }
       });
       navigation.navigate('Confirm email', { username });
-    } catch (error) {
-      Alert.alert('error signing up:', error.message);
+    } catch (e) {
+      Alert.alert('error signing up:', (e as Error).message);
     } finally {
       setLoading(false)
     }

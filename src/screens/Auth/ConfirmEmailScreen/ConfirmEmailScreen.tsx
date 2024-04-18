@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import {
   ConfirmEmailNavigationProp,
   ConfirmEmailRouteProp,
-} from '../../../types/navigation';
+} from '../../../navigation/types';
 import { useRoute } from '@react-navigation/native';
 import { confirmSignUp, resendSignUpCode, type ConfirmSignUpInput } from 'aws-amplify/auth';
 
@@ -33,8 +33,8 @@ const ConfirmEmailScreen = () => {
         confirmationCode
       });
        navigation.navigate('Sign in');
-    } catch (error) {
-      Alert.alert('Error confirming sign up', error.message);
+    } catch (e) {
+      Alert.alert('Error confirming sign up', (e as Error).message);
     } finally {
       setLoading(false)
     }
@@ -48,8 +48,8 @@ const ConfirmEmailScreen = () => {
     try {
       await resendSignUpCode({ username: usrname });
       Alert.alert('Check your email', 'The code has been sent');
-    } catch (error) {
-      Alert.alert('Error', error.message);
+    } catch (e) {
+      Alert.alert('Error', (e as Error).message);
     }
   };
 

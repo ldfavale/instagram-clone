@@ -3,7 +3,8 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import { HomeStackNavigatorParamList } from '../types/navigation';
+import { HomeStackNavigatorParamList } from '../navigation/types';
+import EditPostScreen from '../screens/EditPostScreen';
 
 const Stack = createNativeStackNavigator<HomeStackNavigatorParamList>();
 
@@ -23,6 +24,14 @@ const HomeStackNavigator = () => {
         <Stack.Screen
           name="UserProfile"
           component={ProfileScreen}
+          options={{
+            title: 'Profile'
+          }}
+
+        />
+        <Stack.Screen
+          name="EditPost"
+          component={EditPostScreen}
           options={{
             title: 'Profile'
           }}

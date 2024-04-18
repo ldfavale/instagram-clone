@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
-import SocialSignInButtons from '../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
-import {NewPasswordNavigationProp} from '../../../types/navigation';
+import {NewPasswordNavigationProp} from '../../../navigation/types';
 import {
   confirmResetPassword,
   type ConfirmResetPasswordInput
@@ -27,8 +26,8 @@ const NewPasswordScreen = () => {
     try {
       await confirmResetPassword({ username, confirmationCode, newPassword });
       navigation.navigate('Sign in');
-    } catch (error) {
-      Alert.alert('Error', error.message)
+    } catch (e) {
+      Alert.alert('Error', (e as Error).message)
     }finally{
       setLoading(false)
     }

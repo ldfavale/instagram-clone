@@ -8,9 +8,10 @@ import { Entypo,} from '@expo/vector-icons';
 interface IPostMenu {
     isMyPost: boolean,
     onDeleteButtonPressed: () => void
+    onEditButtonPressed: () => void
 }
 
-const PostMenu = ({isMyPost,onDeleteButtonPressed}: IPostMenu) => {
+const PostMenu = ({isMyPost,onDeleteButtonPressed,onEditButtonPressed}: IPostMenu) => {
 
   return (
     <Menu renderer={renderers.SlideInMenu}>
@@ -23,7 +24,7 @@ const PostMenu = ({isMyPost,onDeleteButtonPressed}: IPostMenu) => {
                 </MenuOption>
                 {isMyPost &&  
                 <>
-                  <MenuOption onSelect={() => alert(`Edit`)} >
+                  <MenuOption onSelect={onEditButtonPressed} >
                     <Text className=' p-2 text-xl text-center'>Edit</Text>
                   </MenuOption>
                   <MenuOption onSelect={onDeleteButtonPressed} >
