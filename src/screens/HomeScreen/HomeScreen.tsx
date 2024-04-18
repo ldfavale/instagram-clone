@@ -3,9 +3,9 @@ import FeedPost from '../../components/FeedPost';
 import { FlatList, ViewToken } from 'react-native';
 import { useQuery} from '@apollo/client'
 import { listPosts } from './queries';
-import { ListPostsQuery, ListPostsQueryVariables } from '../../API.ts'
+import { ListPostsQuery, ListPostsQueryVariables, Post } from '../../API'
 import ApiErrorMessage from '../../components/apiErrorMessage';
-import Loading from '../../components/Loading.tsx';
+import Loading from '../../components/Loading';
 
 export default function HomeScreen() {
 
@@ -40,7 +40,7 @@ export default function HomeScreen() {
   return (
      <FlatList
         data={posts}
-        renderItem={({ item }) => item && <FeedPost key={item.id} post={item} isVisible={item.id === activePost} refetch={refetch}/>}
+        renderItem={({ item }) => item && <FeedPost key={item.id} post={(item as Post)} isVisible={item.id === activePost} refetch={refetch}/>}
         showsVerticalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged.current}
         viewabilityConfig={viewabilityConfig}

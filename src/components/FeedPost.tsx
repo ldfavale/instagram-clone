@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { Alert, Image, Text, View } from 'react-native'
-import { Entypo } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { Entypo,AntDesign, Ionicons,Feather } from '@expo/vector-icons';
 import Comment from './FeedComment';
 import colors from '../theme/colors';
 import DoublePressable from './DoublePressable';
@@ -11,13 +8,13 @@ import Carousel from './Carousel';
 import VideoPlayer from './VideoPlayer';
 import { useNavigation } from '@react-navigation/native';
 import { FeedNavigationProp } from '../navigation/types';
-import { DeletePostMutation, DeletePostMutationVariables, DeletePostUserMutationVariables, Post } from '../API'
+import { DeletePostMutation, DeletePostMutationVariables, Post } from '../API'
 import placeholder from '../assets/leo_profile.png'
-import { Menu, MenuOption, MenuOptions, MenuTrigger, renderers } from 'react-native-popup-menu';
 import { useMutation } from '@apollo/client';
 import { deletePost } from './queries';
 import { AuthUser } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import PostMenu from './PostMenu';
 
 interface IFeedPost {
   post: Post,
@@ -36,6 +33,9 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
   const navigation = useNavigation<FeedNavigationProp>()
   const {user} = useAuthenticator(userSelector)
   const [doDeletePost] = useMutation<DeletePostMutation,DeletePostMutationVariables>(deletePost,{variables: {input: { id: post.id }}})
+  const isMyPost = post.userID === user.userId;
+  
+  
   const navigateToUser = () => {
     if(post.User?.id){
       navigation.navigate('UserProfile', {userId: post.User?.id})
@@ -56,7 +56,7 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
   }
 
   const submitPostDeletion = async () => {
-    if(post.userID === user.userId ){
+    if(isMyPost){
       try {
         const response = await doDeletePost();
         console.log(response)
@@ -98,29 +98,9 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
             className="w-10 aspect-square rounded-full"
           />
           <Text className=" font-bold flex-1 text-lg" onPress={navigateToUser}>{post.User?.username || post.User?.name}</Text>
-           
-            <Menu renderer={renderers.SlideInMenu}>
-              <MenuTrigger>
-                <Entypo name="dots-three-horizontal" size={20} color="gray" />
-              </MenuTrigger>
-              <MenuOptions>
-                <MenuOption onSelect={() => alert(`Report`)} >
-                  <Text className=' p-2 text-xl text-center'>Report</Text>
-                </MenuOption>
-                {post.userID === user.userId  &&  
-                <>
-                  <MenuOption onSelect={() => alert(`Edit`)} >
-                    <Text className=' p-2 text-xl text-center'>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={onDeleteButtonPressed} >
-                    <Text className='text-accent p-2 text-xl text-center'>Delete</Text>
-                  </MenuOption>
-                </> 
-                   }
-              </MenuOptions>
-            </Menu>
-         
-          
+            <PostMenu  
+            isMyPost={isMyPost}
+            onDeleteButtonPressed={onDeleteButtonPressed} />
         </View>
 
         {/* Body*/}

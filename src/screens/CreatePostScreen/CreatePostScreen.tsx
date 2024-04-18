@@ -19,7 +19,7 @@ const CreatePostScreen = () => {
   const navigation = useNavigation<CreatePostNavigationProp>();
   const route = useRoute<CreatePostRouteProp>();
   const {user} = useAuthenticator(userSelector)
-  const [doCreatePost] = useMutation<CreatePostMutation, CreatePostMutationVariables>(createPost)
+  const [doCreatePost, {loading}] = useMutation<CreatePostMutation, CreatePostMutationVariables>(createPost)
   const [description, setDescription] = useState<string>("Escribe una descripcion aqui...")
   const {image,images,video} = route.params;  
   const { width } = useWindowDimensions();
@@ -82,10 +82,11 @@ const CreatePostScreen = () => {
       
       <View className="flex-row justify-around items-center w-full absolute bottom-5 px-4">
         <CustomButton 
-          text='Compartir' 
+          text={loading ? "Loading..." : 'Compartir'}
           bgColor={colors.primary} 
           fgColor={colors.white}
           onPress={sharePost}
+          disabled={loading}
         />
       </View>
     </View >
