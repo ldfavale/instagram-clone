@@ -1,13 +1,13 @@
 import React from 'react'
 import ProfileHeader from '../../components/ProfileHeader'
 import FeedGridView from '../../components/FeedGridView'
-import { useNavigation, useRoute } from '@react-navigation/native'
-import { ProfileNavigationProp, MyProfileNavigationProp, ProfileRouteProp, MyProfileRouteProp } from '../navigation/types'
+import { useRoute } from '@react-navigation/native'
+import { ProfileRouteProp, MyProfileRouteProp } from '../../navigation/types'
 import { useQuery } from '@apollo/client'
 import { getUser } from './queries' 
 import Loading from '../../components/Loading'
 import ApiErrorMessage from '../../components/apiErrorMessage'
-import { GetUserQuery, GetUserQueryVariables } from '../../API'
+import { GetUserQuery, GetUserQueryVariables, User } from '../../API'
 import { useAuthenticator } from '@aws-amplify/ui-react-native'
 import { AuthUser } from 'aws-amplify/auth'
 
@@ -15,7 +15,6 @@ const userSelector = (context: { user: AuthUser; }) => [context.user];
 
 const ProfileScreen = () => {
   const route = useRoute<ProfileRouteProp | MyProfileRouteProp>();
-  const navigation = useNavigation<ProfileNavigationProp | MyProfileNavigationProp>();
   const { user } = useAuthenticator(userSelector);
   let userId = route.params?.userId || user.userId;
 

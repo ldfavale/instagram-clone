@@ -35,6 +35,17 @@ export type ProfileStackNavigatorParamList = {
   Profile: undefined;
   EditProfile: undefined;
 };
+export type CreatePostStackNavigatorParamList = {
+  Camera: undefined;
+  Create: {
+    image?: string
+    images?: string[]
+    video?: string
+  };
+};
 
 export type ProfileNavigationProp = NativeStackNavigationProp<ProfileStackNavigatorParamList, 'Profile'>
 export type ProfileRouteProp = RouteProp<ProfileStackNavigatorParamList, 'Profile'>
+
+export type CreatePostNavigationProp = NativeStackNavigationProp<CreatePostStackNavigatorParamList, 'Create'>
+export type CreatePostRouteProp = RouteProp<CreatePostStackNavigatorParamList, 'Create'>

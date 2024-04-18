@@ -1,14 +1,14 @@
-import { View, Text, Image, Pressable } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React from 'react'
 import {IUser} from '../types/models'
 import { useNavigation } from '@react-navigation/native'
 import { ProfileNavigationProp } from '../navigation/types'
 import SignOutButton from './SignOutButton'
-import { User } from '../API'
+import { GetUserQuery } from '../API'
 import default_user_image from '../assets/images/default_user.jpg'
 
-interface IProfileHeader {
-  user: User | undefined | null
+export interface IProfileHeader {
+  user: GetUserQuery["getUser"] | undefined | null
 }
 
 const ProfileHeader = ({user}:IProfileHeader) => {

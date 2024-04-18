@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, Text, View } from 'react-native'
+import { Alert, Image, Text, View } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,26 +11,60 @@ import Carousel from './Carousel';
 import VideoPlayer from './VideoPlayer';
 import { useNavigation } from '@react-navigation/native';
 import { FeedNavigationProp } from '../navigation/types';
-import { Post } from '../API'
+import { DeletePostMutation, DeletePostMutationVariables, DeletePostUserMutationVariables, Post } from '../API'
 import placeholder from '../assets/leo_profile.png'
+import { Menu, MenuOption, MenuOptions, MenuTrigger, renderers } from 'react-native-popup-menu';
+import { useMutation } from '@apollo/client';
+import { deletePost } from './queries';
+import { AuthUser } from 'aws-amplify/auth';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
 
 interface IFeedPost {
   post: Post,
-  isVisible: boolean
+  isVisible: boolean,
+  refetch: () => {}
 }
 
+const userSelector = (context: { user: AuthUser; }) => [context.user];
 
 
-function FeedPost({ post, isVisible }: IFeedPost) {
+function FeedPost({ post, isVisible, refetch }: IFeedPost) {
   const [postLiked, setPostLiked] = useState(false)
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const toggleLike = () => setPostLiked(v => !v)
   const toggleDescriptionExpanded = () => setIsDescriptionExpanded(v => !v)
   const navigation = useNavigation<FeedNavigationProp>()
-
+  const {user} = useAuthenticator(userSelector)
+  const [doDeletePost] = useMutation<DeletePostMutation,DeletePostMutationVariables>(deletePost,{variables: {input: { id: post.id }}})
   const navigateToUser = () => {
     if(post.User?.id){
       navigation.navigate('UserProfile', {userId: post.User?.id})
+    }
+  }
+  const onDeleteButtonPressed = () => {
+    Alert.alert("Are you sure?", "Deleting a Post is permanent", [
+      {
+        text: "Cancel",
+        style: "cancel"
+      },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: submitPostDeletion,
+      }
+    ])
+  }
+
+  const submitPostDeletion = async () => {
+    if(post.userID === user.userId ){
+      try {
+        const response = await doDeletePost();
+        console.log(response)
+        refetch()
+
+      } catch (e) {
+        console.log("ERROR:",(e as Error).message);
+      }
     }
   }
 
@@ -64,7 +98,29 @@ function FeedPost({ post, isVisible }: IFeedPost) {
             className="w-10 aspect-square rounded-full"
           />
           <Text className=" font-bold flex-1 text-lg" onPress={navigateToUser}>{post.User?.username || post.User?.name}</Text>
-          <Entypo name="dots-three-horizontal" size={20} color="gray" />
+           
+            <Menu renderer={renderers.SlideInMenu}>
+              <MenuTrigger>
+                <Entypo name="dots-three-horizontal" size={20} color="gray" />
+              </MenuTrigger>
+              <MenuOptions>
+                <MenuOption onSelect={() => alert(`Report`)} >
+                  <Text className=' p-2 text-xl text-center'>Report</Text>
+                </MenuOption>
+                {post.userID === user.userId  &&  
+                <>
+                  <MenuOption onSelect={() => alert(`Edit`)} >
+                    <Text className=' p-2 text-xl text-center'>Edit</Text>
+                  </MenuOption>
+                  <MenuOption onSelect={onDeleteButtonPressed} >
+                    <Text className='text-accent p-2 text-xl text-center'>Delete</Text>
+                  </MenuOption>
+                </> 
+                   }
+              </MenuOptions>
+            </Menu>
+         
+          
         </View>
 
         {/* Body*/}

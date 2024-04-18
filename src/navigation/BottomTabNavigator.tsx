@@ -9,6 +9,7 @@ import HomeStackNavigator from './HomeStackNavigator';
 import ProfileStackNavigator from './ProfileStackNavigator';
 import { BottomTabNavigatorParamList } from './types';
 import SearchTabNavigator from './SearchTabNavigator';
+import CreatePostStackNavigator from './CreatePostStackNavigator';
 
 const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>();
 
@@ -48,10 +49,11 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Upload"
-        component={HomeScreen}
+        component={CreatePostStackNavigator}
         options={{
-          tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="plus-circle-outline" size={size} color={color} />)
-
+          tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="plus-circle-outline" size={size} color={color} />),
+          headerShown: false
+          
         }}
       />
       <Tab.Screen

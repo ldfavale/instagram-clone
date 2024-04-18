@@ -1,8 +1,11 @@
-import { View, Text, Pressable, ActivityIndicator } from 'react-native'
+import { View, Text, Pressable, ActivityIndicator, Alert } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { Camera, CameraPictureOptions, CameraRecordingOptions, CameraType, FlashMode, VideoQuality } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../theme/colors';
+import { useNavigation } from '@react-navigation/native';
+import { CreatePostNavigationProp } from '../navigation/types';
+import Loading from '../components/Loading';
 
 const flashModes = [
   FlashMode.off,
@@ -18,7 +21,7 @@ const flashModeToIcon = {
   [FlashMode.torch]: 'highlight'
 }
 
-const PostUploadScreen = () => {
+const CameraScreen = () => {
 
   const [hasPermissions, setHasPermissions] = useState<boolean | null>(null)
   const [camaraType, setCamaraType] = useState(CameraType.back)
@@ -26,6 +29,7 @@ const PostUploadScreen = () => {
   const [cameraReady, setCameraReady] = useState(false)
   const camera = useRef<Camera>(null)
   const [isRecording, setIsRecording] = useState(false)
+  const navigation = useNavigation<CreatePostNavigationProp>()
 
   useEffect(() => {
     const getPermission = async () => {
@@ -37,7 +41,7 @@ const PostUploadScreen = () => {
   }, [])
 
   if (hasPermissions === null) {
-    return <ActivityIndicator size="large" />;
+    return <Loading/>;
   }
   if (hasPermissions === false) {
     return <Text>No access to the camera</Text>
@@ -60,18 +64,28 @@ const PostUploadScreen = () => {
     if (!cameraReady && !camera.current) return;
     const options: CameraPictureOptions = {
       quality: 0.5,
-      base64: true,
       skipProcessing: true
     }
-    const result = await camera.current?.takePictureAsync(options)
-    console.log(result)
+    // const result = await camera.current?.takePictureAsync(options)
+    // console.log(result)
+    // if(result?.uri){
+        // navigation.navigate("Create",{images: [
+        //   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+        //   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/2.jpg",
+        //   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/3.jpg"
+        // ]})
+      navigation.navigate("Create",{image: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg"})
+      // navigation.navigate("Create",{video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"})
+    // }else{
+    //   Alert.alert("Error al cargar imagen")
+    // }
   }
 
   const startRecording = async () => {
     console.warn("Start")
     if (!cameraReady && !camera.current || isRecording) return;
     const options: CameraRecordingOptions = {
-      quality: VideoQuality['640:480'],
+      quality: VideoQuality['4:3'],
       maxDuration: 60,
       maxFileSize: 10 * 1024 * 1024,
       mute: false
@@ -117,13 +131,13 @@ const PostUploadScreen = () => {
 
         <MaterialIcons name="settings" size={24} color={colors.white} />
       </View>
-      <View className="flex-row justify-around items-center w-full absolute bottom-5">
+      <View className="flex-row justify-around items-center w-full absolute bottom-2">
         <MaterialIcons name="photo-library" size={24} color={colors.white} />
-        {cameraReady &&
+        {/* {cameraReady && */}
           <Pressable onPress={takePicture} onLongPress={startRecording} onPressOut={stopRecording}>
             <MaterialIcons name="circle" size={94} color={isRecording ? colors.accent : colors.white} />
           </Pressable>
-        }
+        {/* } */}
 
         <Pressable onPress={flipCamera}>
           <MaterialIcons name="flip-camera-ios" size={24} color={colors.white} />
@@ -133,4 +147,4 @@ const PostUploadScreen = () => {
   )
 }
 
-export default PostUploadScreen
+export default CameraScreen

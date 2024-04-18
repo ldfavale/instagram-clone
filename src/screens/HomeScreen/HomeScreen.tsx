@@ -10,7 +10,7 @@ import Loading from '../../components/Loading.tsx';
 export default function HomeScreen() {
 
   const [activePost, setActivePostId] = useState<string | null>(null);
-  const {data, loading, error} = useQuery<ListPostsQuery,ListPostsQueryVariables>(listPosts);
+  const {data, loading, error, refetch} = useQuery<ListPostsQuery,ListPostsQueryVariables>(listPosts);
   
   const viewabilityConfig = {
     itemVisiblePercentThreshold: 51,
@@ -40,10 +40,12 @@ export default function HomeScreen() {
   return (
      <FlatList
         data={posts}
-        renderItem={({ item }) => item && <FeedPost key={item.id} post={item} isVisible={item.id === activePost} />}
+        renderItem={({ item }) => item && <FeedPost key={item.id} post={item} isVisible={item.id === activePost} refetch={refetch}/>}
         showsVerticalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged.current}
         viewabilityConfig={viewabilityConfig}
+        refreshing={loading}
+        onRefresh={refetch}
       />
   );
 }
