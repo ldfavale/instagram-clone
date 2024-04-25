@@ -11,7 +11,7 @@ export const getUser  = gql`query GetUser($id: ID!) {
       website
       nofPosts
       nofFollowers
-      nofFollowing
+      nofFollowings
       email
       Posts {
         items{

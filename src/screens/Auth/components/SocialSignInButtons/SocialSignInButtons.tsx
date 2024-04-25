@@ -16,23 +16,19 @@ const SocialSignInButtons = () => {
      }catch (e) {
       if ((e as Error).name === 'OAuthSignInException'){
         Alert.alert('Error','Sorry, An error ocurred when trying to authenticate through '+ provider);
-        console.log(e);
       }
-      else
-        Alert.alert('Error', e.message);
+      console.log('Error', (e as Error).message);
     } finally {
       setLoading(false);
     }
   };
 
   const onSignInFacebook = () => {
-    console.log('onSignInFacebook');
-    signInWithProvider('Facebook'); 
+      signInWithProvider('Facebook'); 
   };
 
   const onSignInGoogle = () => {
-    console.log('onSignInGoogle');
-    signInWithProvider('Google'); 
+      signInWithProvider('Google'); 
   };
   
 

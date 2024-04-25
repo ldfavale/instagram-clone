@@ -1,5 +1,5 @@
 import { View, Text, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { ProfileNavigationProp } from '../navigation/types'
 import SignOutButton from './SignOutButton'
@@ -17,13 +17,17 @@ const ProfileHeader = ({user}:IProfileHeader) => {
     navigation.navigate('EditProfile')
   }
   const uri = user?.image 
-  navigation.setOptions({title: user?.username || "Profile"})
+  
+  useEffect(()=>{
+    navigation.setOptions({title: user?.username || "Profile"})
+  },[])
+
   return (
     <View className='p-6 space-y-4'>
     <View className="flex-row items-center justify-between  pt-6" >
       <Image source={uri ? { uri } : default_user_image} className="h-24 w-24 rounded-full" />
       <View className=" justify-center items-center ">
-        <Text className='font-bold text-lg'>{user?.Posts?.items.length}</Text>
+        <Text className='font-bold text-lg'>{user?.nofPosts}</Text>
         <Text className='text-grey text-base'>Posts</Text>
       </View>
       <View className=" justify-center items-center ">
@@ -31,7 +35,7 @@ const ProfileHeader = ({user}:IProfileHeader) => {
         <Text className='text-grey text-base'>Followers</Text>
       </View>
       <View className="justify-center items-center">
-        <Text className='font-bold text-lg'>{user?.nofFollowing}</Text>
+        <Text className='font-bold text-lg'>{user?.nofFollowings}</Text>
         <Text className='text-grey text-base'>Following</Text>
       </View>
     </View>

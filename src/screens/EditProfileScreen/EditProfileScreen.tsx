@@ -104,9 +104,8 @@ const EditProfileScreen = () => {
   const validateUsername = async (username: string) => {
     try {
       const response = await  getUsersByUsername({variables: {username}})
-      console.log(response)
+      console.log(response.error)
       if(response.error){
-        Alert.alert("Failed to fetch username")
         return "Failed to fetch username"
       }
       const users = response.data?.usersByUsername?.items
@@ -115,8 +114,7 @@ const EditProfileScreen = () => {
         return "Username is already taken"
       }
     } catch (e) {
-      Alert.alert("Failed to fetch username")
-      console.log("Failed to fetch username", e);
+      console.log("Failed to fetch username", (e as Error).message);
     }
     return true
   }

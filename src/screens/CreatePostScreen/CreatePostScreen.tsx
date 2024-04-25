@@ -19,7 +19,7 @@ const CreatePostScreen = () => {
   const navigation = useNavigation<CreatePostNavigationProp>();
   const route = useRoute<CreatePostRouteProp>();
   const {user} = useAuthenticator(userSelector)
-  const [doCreatePost, {loading}] = useMutation<CreatePostMutation, CreatePostMutationVariables>(createPost)
+  const [doCreatePost, {loading}] = useMutation<CreatePostMutation, CreatePostMutationVariables>(createPost, {refetchQueries: ["listPosts"]})
   const [description, setDescription] = useState<string>("Escribe una descripcion aqui...")
   const {image,images,video} = route.params;  
   const { width } = useWindowDimensions();

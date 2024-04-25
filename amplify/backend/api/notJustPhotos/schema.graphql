@@ -1,3 +1,11 @@
+type Like @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: ID! @index(name: "byUser")
+  postID: ID! @index(name: "byPost", queryField: "likesForPostByUser", sortKeyFields: ["userID"])
+  User: User @belongsTo(fields: ["userID"])
+  Post: Post @belongsTo(fields: ["postID"])
+}
+
 type Comment @model @auth(rules: [{allow: public}]) {
   id: ID!
   comment: String!
@@ -17,24 +25,22 @@ type Post @model @auth(rules: [{allow: public}]) {
   nofLikes: Int!
   userID: ID! @index(name: "byUser")
   User: User @belongsTo(fields: ["userID"])
-  Likes: [User] @manyToMany(relationName: "PostUser")
+  Likes: [Like] @hasMany(indexName: "byPost", fields: ["id"])
   Comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
 }
 
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
-  name: String!
+  email: String!
   image: String
-  bio: String
-  username: String 
-    @index(name: "usersByUsername", queryField: "usersByUsername")
-  website: AWSURL
+  name: String!
   nofPosts: Int!
+  username: String, @index(name: "usersByUsername", queryField: "usersByUsername")
+  website: AWSURL
   nofFollowers: Int!
-  nofFollowing: Int!
-  email: AWSEmail!
+  nofFollowings: String
+  bio: String
   Posts: [Post] @hasMany(indexName: "byUser", fields: ["id"])
   Comments: [Comment] @hasMany(indexName: "byUser", fields: ["id"])
-  LikedPosts: [Post] @manyToMany(relationName: "PostUser")
+  Likes: [Like] @hasMany(indexName: "byUser", fields: ["id"])
 }
- 

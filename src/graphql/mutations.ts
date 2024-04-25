@@ -8,26 +8,25 @@ type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationOutput: OutputType;
 };
 
-export const createComment = /* GraphQL */ `mutation CreateComment(
-  $input: CreateCommentInput!
-  $condition: ModelCommentConditionInput
+export const createLike = /* GraphQL */ `mutation CreateLike(
+  $input: CreateLikeInput!
+  $condition: ModelLikeConditionInput
 ) {
-  createComment(input: $input, condition: $condition) {
+  createLike(input: $input, condition: $condition) {
     id
-    comment
     userID
     postID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -36,7 +35,7 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -55,15 +54,256 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
       userID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateLikeMutationVariables,
+  APITypes.CreateLikeMutation
+>;
+export const updateLike = /* GraphQL */ `mutation UpdateLike(
+  $input: UpdateLikeInput!
+  $condition: ModelLikeConditionInput
+) {
+  updateLike(input: $input, condition: $condition) {
+    id
+    userID
+    postID
+    User {
+      id
+      email
+      image
+      name
+      nofPosts
+      username
+      website
+      nofFollowers
+      nofFollowings
+      bio
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    Post {
+      id
+      description
+      image
+      images
+      video
+      nofComments
+      nofLikes
+      userID
+      User {
+        id
         email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateLikeMutationVariables,
+  APITypes.UpdateLikeMutation
+>;
+export const deleteLike = /* GraphQL */ `mutation DeleteLike(
+  $input: DeleteLikeInput!
+  $condition: ModelLikeConditionInput
+) {
+  deleteLike(input: $input, condition: $condition) {
+    id
+    userID
+    postID
+    User {
+      id
+      email
+      image
+      name
+      nofPosts
+      username
+      website
+      nofFollowers
+      nofFollowings
+      bio
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    Post {
+      id
+      description
+      image
+      images
+      video
+      nofComments
+      nofLikes
+      userID
+      User {
+        id
+        email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteLikeMutationVariables,
+  APITypes.DeleteLikeMutation
+>;
+export const createComment = /* GraphQL */ `mutation CreateComment(
+  $input: CreateCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  createComment(input: $input, condition: $condition) {
+    id
+    comment
+    userID
+    postID
+    User {
+      id
+      email
+      image
+      name
+      nofPosts
+      username
+      website
+      nofFollowers
+      nofFollowings
+      bio
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    Post {
+      id
+      description
+      image
+      images
+      video
+      nofComments
+      nofLikes
+      userID
+      User {
+        id
+        email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -100,15 +340,15 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
     postID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -117,7 +357,7 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -136,15 +376,15 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
       userID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
-        email
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -181,15 +421,15 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
     postID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -198,7 +438,7 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -217,15 +457,15 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
       userID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
-        email
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -266,15 +506,15 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
     userID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -283,7 +523,7 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -294,8 +534,8 @@ export const createPost = /* GraphQL */ `mutation CreatePost(
     Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -340,15 +580,15 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
     userID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -357,7 +597,7 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -368,8 +608,8 @@ export const updatePost = /* GraphQL */ `mutation UpdatePost(
     Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -414,15 +654,15 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
     userID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -431,7 +671,7 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -442,8 +682,8 @@ export const deletePost = /* GraphQL */ `mutation DeletePost(
     Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -479,15 +719,15 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
 ) {
   createUser(input: $input, condition: $condition) {
     id
-    name
+    email
     image
-    bio
+    name
+    nofPosts
     username
     website
-    nofPosts
     nofFollowers
-    nofFollowing
-    email
+    nofFollowings
+    bio
     Posts {
       items {
         id
@@ -518,11 +758,11 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
       nextToken
       __typename
     }
-    LikedPosts {
+    Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -545,15 +785,15 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
 ) {
   updateUser(input: $input, condition: $condition) {
     id
-    name
+    email
     image
-    bio
+    name
+    nofPosts
     username
     website
-    nofPosts
     nofFollowers
-    nofFollowing
-    email
+    nofFollowings
+    bio
     Posts {
       items {
         id
@@ -584,11 +824,11 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
       nextToken
       __typename
     }
-    LikedPosts {
+    Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -611,15 +851,15 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
 ) {
   deleteUser(input: $input, condition: $condition) {
     id
-    name
+    email
     image
-    bio
+    name
+    nofPosts
     username
     website
-    nofPosts
     nofFollowers
-    nofFollowing
-    email
+    nofFollowings
+    bio
     Posts {
       items {
         id
@@ -650,11 +890,11 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
       nextToken
       __typename
     }
-    LikedPosts {
+    Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -670,244 +910,4 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
 ` as GeneratedMutation<
   APITypes.DeleteUserMutationVariables,
   APITypes.DeleteUserMutation
->;
-export const createPostUser = /* GraphQL */ `mutation CreatePostUser(
-  $input: CreatePostUserInput!
-  $condition: ModelPostUserConditionInput
-) {
-  createPostUser(input: $input, condition: $condition) {
-    id
-    postId
-    userId
-    post {
-      id
-      description
-      image
-      images
-      video
-      nofComments
-      nofLikes
-      userID
-      User {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      Likes {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    user {
-      id
-      name
-      image
-      bio
-      username
-      website
-      nofPosts
-      nofFollowers
-      nofFollowing
-      email
-      Posts {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      LikedPosts {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.CreatePostUserMutationVariables,
-  APITypes.CreatePostUserMutation
->;
-export const updatePostUser = /* GraphQL */ `mutation UpdatePostUser(
-  $input: UpdatePostUserInput!
-  $condition: ModelPostUserConditionInput
-) {
-  updatePostUser(input: $input, condition: $condition) {
-    id
-    postId
-    userId
-    post {
-      id
-      description
-      image
-      images
-      video
-      nofComments
-      nofLikes
-      userID
-      User {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      Likes {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    user {
-      id
-      name
-      image
-      bio
-      username
-      website
-      nofPosts
-      nofFollowers
-      nofFollowing
-      email
-      Posts {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      LikedPosts {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.UpdatePostUserMutationVariables,
-  APITypes.UpdatePostUserMutation
->;
-export const deletePostUser = /* GraphQL */ `mutation DeletePostUser(
-  $input: DeletePostUserInput!
-  $condition: ModelPostUserConditionInput
-) {
-  deletePostUser(input: $input, condition: $condition) {
-    id
-    postId
-    userId
-    post {
-      id
-      description
-      image
-      images
-      video
-      nofComments
-      nofLikes
-      userID
-      User {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      Likes {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    user {
-      id
-      name
-      image
-      bio
-      username
-      website
-      nofPosts
-      nofFollowers
-      nofFollowing
-      email
-      Posts {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      LikedPosts {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.DeletePostUserMutationVariables,
-  APITypes.DeletePostUserMutation
 >;

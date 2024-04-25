@@ -17,13 +17,14 @@ const ProfileScreen = () => {
   const route = useRoute<ProfileRouteProp | MyProfileRouteProp>();
   const { user } = useAuthenticator(userSelector);
   let userId = route.params?.userId || user.userId;
+  const { data, loading, error, refetch } = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {variables: {id: userId}});
 
-  console.log("User ID => ",userId)
-  const { data, loading, error } = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {variables: {id: userId}});
-
+  const refresh = () => {
+    refetch();
+  }
   
   if(loading){ return <Loading/> }
-  if(error){return <ApiErrorMessage title='Error Fetching User' message={error.message}/>}
+  if(error){return <ApiErrorMessage title='Error Fetching User' message={error.message} onRetry={refresh}/>}
   
   const userProfile = data?.getUser;
   

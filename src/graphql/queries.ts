@@ -8,23 +8,22 @@ type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryOutput: OutputType;
 };
 
-export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
-  getComment(id: $id) {
+export const getLike = /* GraphQL */ `query GetLike($id: ID!) {
+  getLike(id: $id) {
     id
-    comment
     userID
     postID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -33,7 +32,7 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -52,15 +51,255 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
       userID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.GetLikeQueryVariables, APITypes.GetLikeQuery>;
+export const listLikes = /* GraphQL */ `query ListLikes(
+  $filter: ModelLikeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listLikes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      userID
+      postID
+      User {
+        id
         email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Post {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.ListLikesQueryVariables, APITypes.ListLikesQuery>;
+export const likesByUserID = /* GraphQL */ `query LikesByUserID(
+  $userID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelLikeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  likesByUserID(
+    userID: $userID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userID
+      postID
+      User {
+        id
+        email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Post {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.LikesByUserIDQueryVariables,
+  APITypes.LikesByUserIDQuery
+>;
+export const likesForPostByUser = /* GraphQL */ `query LikesForPostByUser(
+  $postID: ID!
+  $userID: ModelIDKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelLikeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  likesForPostByUser(
+    postID: $postID
+    userID: $userID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userID
+      postID
+      User {
+        id
+        email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Post {
+        id
+        description
+        image
+        images
+        video
+        nofComments
+        nofLikes
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.LikesForPostByUserQueryVariables,
+  APITypes.LikesForPostByUserQuery
+>;
+export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
+  getComment(id: $id) {
+    id
+    comment
+    userID
+    postID
+    User {
+      id
+      email
+      image
+      name
+      nofPosts
+      username
+      website
+      nofFollowers
+      nofFollowings
+      bio
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    Post {
+      id
+      description
+      image
+      images
+      video
+      nofComments
+      nofLikes
+      userID
+      User {
+        id
+        email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -99,15 +338,15 @@ export const listComments = /* GraphQL */ `query ListComments(
       postID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
-        email
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -158,15 +397,15 @@ export const commentsByUserID = /* GraphQL */ `query CommentsByUserID(
       postID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
-        email
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -217,15 +456,15 @@ export const commentsByPostID = /* GraphQL */ `query CommentsByPostID(
       postID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
-        email
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -267,15 +506,15 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
     userID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -284,7 +523,7 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -295,8 +534,8 @@ export const getPost = /* GraphQL */ `query GetPost($id: ID!) {
     Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -340,15 +579,15 @@ export const listPosts = /* GraphQL */ `query ListPosts(
       userID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
-        email
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -395,15 +634,15 @@ export const postsByUserID = /* GraphQL */ `query PostsByUserID(
       userID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
-        email
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -431,15 +670,15 @@ export const postsByUserID = /* GraphQL */ `query PostsByUserID(
 export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
-    name
+    email
     image
-    bio
+    name
+    nofPosts
     username
     website
-    nofPosts
     nofFollowers
-    nofFollowing
-    email
+    nofFollowings
+    bio
     Posts {
       items {
         id
@@ -470,11 +709,11 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
       nextToken
       __typename
     }
-    LikedPosts {
+    Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -496,15 +735,15 @@ export const listUsers = /* GraphQL */ `query ListUsers(
   listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -513,7 +752,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -542,15 +781,15 @@ export const usersByUsername = /* GraphQL */ `query UsersByUsername(
   ) {
     items {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -559,7 +798,7 @@ export const usersByUsername = /* GraphQL */ `query UsersByUsername(
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -574,247 +813,4 @@ export const usersByUsername = /* GraphQL */ `query UsersByUsername(
 ` as GeneratedQuery<
   APITypes.UsersByUsernameQueryVariables,
   APITypes.UsersByUsernameQuery
->;
-export const getPostUser = /* GraphQL */ `query GetPostUser($id: ID!) {
-  getPostUser(id: $id) {
-    id
-    postId
-    userId
-    post {
-      id
-      description
-      image
-      images
-      video
-      nofComments
-      nofLikes
-      userID
-      User {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      Likes {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    user {
-      id
-      name
-      image
-      bio
-      username
-      website
-      nofPosts
-      nofFollowers
-      nofFollowing
-      email
-      Posts {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      LikedPosts {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.GetPostUserQueryVariables,
-  APITypes.GetPostUserQuery
->;
-export const listPostUsers = /* GraphQL */ `query ListPostUsers(
-  $filter: ModelPostUserFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listPostUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      postId
-      userId
-      post {
-        id
-        description
-        image
-        images
-        video
-        nofComments
-        nofLikes
-        userID
-        createdAt
-        updatedAt
-        __typename
-      }
-      user {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    nextToken
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.ListPostUsersQueryVariables,
-  APITypes.ListPostUsersQuery
->;
-export const postUsersByPostId = /* GraphQL */ `query PostUsersByPostId(
-  $postId: ID!
-  $sortDirection: ModelSortDirection
-  $filter: ModelPostUserFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  postUsersByPostId(
-    postId: $postId
-    sortDirection: $sortDirection
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-      postId
-      userId
-      post {
-        id
-        description
-        image
-        images
-        video
-        nofComments
-        nofLikes
-        userID
-        createdAt
-        updatedAt
-        __typename
-      }
-      user {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    nextToken
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.PostUsersByPostIdQueryVariables,
-  APITypes.PostUsersByPostIdQuery
->;
-export const postUsersByUserId = /* GraphQL */ `query PostUsersByUserId(
-  $userId: ID!
-  $sortDirection: ModelSortDirection
-  $filter: ModelPostUserFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  postUsersByUserId(
-    userId: $userId
-    sortDirection: $sortDirection
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-      postId
-      userId
-      post {
-        id
-        description
-        image
-        images
-        video
-        nofComments
-        nofLikes
-        userID
-        createdAt
-        updatedAt
-        __typename
-      }
-      user {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    nextToken
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.PostUsersByUserIdQueryVariables,
-  APITypes.PostUsersByUserIdQuery
 >;

@@ -44,17 +44,17 @@
     "s3Key": {
       "Type": "String"
     },
-    "apiinstagramGraphQLAPIIdOutput": {
+    "apinotJustPhotosGraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "apiinstagramGraphQLAPIIdOutput"
+      "Default": "apinotJustPhotosGraphQLAPIIdOutput"
     },
-    "apiinstagramGraphQLAPIEndpointOutput": {
+    "apinotJustPhotosGraphQLAPIEndpointOutput": {
       "Type": "String",
-      "Default": "apiinstagramGraphQLAPIEndpointOutput"
+      "Default": "apinotJustPhotosGraphQLAPIEndpointOutput"
     },
-    "apiinstagramGraphQLAPIKeyOutput": {
+    "apinotJustPhotosGraphQLAPIKeyOutput": {
       "Type": "String",
-      "Default": "apiinstagramGraphQLAPIKeyOutput"
+      "Default": "apinotJustPhotosGraphQLAPIKeyOutput"
     }
   },
   "Conditions": {
@@ -79,12 +79,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "instagramPostConfirmation",
+            "notJustPhotosPostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "instagramPostConfirmation",
+                  "notJustPhotosPostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -108,14 +108,14 @@
             "GROUP": {
               "Ref": "GROUP"
             },
-            "API_INSTAGRAM_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apiinstagramGraphQLAPIIdOutput"
+            "API_NOTJUSTPHOTOS_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apinotJustPhotosGraphQLAPIIdOutput"
             },
-            "API_INSTAGRAM_GRAPHQLAPIENDPOINTOUTPUT": {
-              "Ref": "apiinstagramGraphQLAPIEndpointOutput"
+            "API_NOTJUSTPHOTOS_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apinotJustPhotosGraphQLAPIEndpointOutput"
             },
-            "API_INSTAGRAM_GRAPHQLAPIKEYOUTPUT": {
-              "Ref": "apiinstagramGraphQLAPIKeyOutput"
+            "API_NOTJUSTPHOTOS_GRAPHQLAPIKEYOUTPUT": {
+              "Ref": "apinotJustPhotosGraphQLAPIKeyOutput"
             }
           }
         },
@@ -143,12 +143,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "instagramPostConfirmation",
+            "notJustPhotosPostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "instagramPostConfirmation",
+                  "notJustPhotosPostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -254,7 +254,7 @@
                       },
                       ":apis/",
                       {
-                        "Ref": "apiinstagramGraphQLAPIIdOutput"
+                        "Ref": "apinotJustPhotosGraphQLAPIIdOutput"
                       },
                       "/types/Query/*"
                     ]
@@ -274,7 +274,7 @@
                       },
                       ":apis/",
                       {
-                        "Ref": "apiinstagramGraphQLAPIIdOutput"
+                        "Ref": "apinotJustPhotosGraphQLAPIIdOutput"
                       },
                       "/types/Mutation/*"
                     ]
@@ -318,7 +318,7 @@
                           [
                             "User-",
                             {
-                              "Ref": "apiinstagramGraphQLAPIIdOutput"
+                              "Ref": "apinotJustPhotosGraphQLAPIIdOutput"
                             },
                             "-",
                             {

@@ -8,23 +8,22 @@ type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionOutput: OutputType;
 };
 
-export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
-  onCreateComment(filter: $filter) {
+export const onCreateLike = /* GraphQL */ `subscription OnCreateLike($filter: ModelSubscriptionLikeFilterInput) {
+  onCreateLike(filter: $filter) {
     id
-    comment
     userID
     postID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -33,7 +32,7 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -52,15 +51,247 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
       userID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateLikeSubscriptionVariables,
+  APITypes.OnCreateLikeSubscription
+>;
+export const onUpdateLike = /* GraphQL */ `subscription OnUpdateLike($filter: ModelSubscriptionLikeFilterInput) {
+  onUpdateLike(filter: $filter) {
+    id
+    userID
+    postID
+    User {
+      id
+      email
+      image
+      name
+      nofPosts
+      username
+      website
+      nofFollowers
+      nofFollowings
+      bio
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    Post {
+      id
+      description
+      image
+      images
+      video
+      nofComments
+      nofLikes
+      userID
+      User {
+        id
         email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateLikeSubscriptionVariables,
+  APITypes.OnUpdateLikeSubscription
+>;
+export const onDeleteLike = /* GraphQL */ `subscription OnDeleteLike($filter: ModelSubscriptionLikeFilterInput) {
+  onDeleteLike(filter: $filter) {
+    id
+    userID
+    postID
+    User {
+      id
+      email
+      image
+      name
+      nofPosts
+      username
+      website
+      nofFollowers
+      nofFollowings
+      bio
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    Post {
+      id
+      description
+      image
+      images
+      video
+      nofComments
+      nofLikes
+      userID
+      User {
+        id
+        email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
+        createdAt
+        updatedAt
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteLikeSubscriptionVariables,
+  APITypes.OnDeleteLikeSubscription
+>;
+export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
+  onCreateComment(filter: $filter) {
+    id
+    comment
+    userID
+    postID
+    User {
+      id
+      email
+      image
+      name
+      nofPosts
+      username
+      website
+      nofFollowers
+      nofFollowings
+      bio
+      Posts {
+        nextToken
+        __typename
+      }
+      Comments {
+        nextToken
+        __typename
+      }
+      Likes {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    Post {
+      id
+      description
+      image
+      images
+      video
+      nofComments
+      nofLikes
+      userID
+      User {
+        id
+        email
+        image
+        name
+        nofPosts
+        username
+        website
+        nofFollowers
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -94,15 +325,15 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
     postID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -111,7 +342,7 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -130,15 +361,15 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
       userID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
-        email
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -172,15 +403,15 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
     postID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -189,7 +420,7 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -208,15 +439,15 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
       userID
       User {
         id
-        name
+        email
         image
-        bio
+        name
+        nofPosts
         username
         website
-        nofPosts
         nofFollowers
-        nofFollowing
-        email
+        nofFollowings
+        bio
         createdAt
         updatedAt
         __typename
@@ -254,15 +485,15 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
     userID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -271,7 +502,7 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -282,8 +513,8 @@ export const onCreatePost = /* GraphQL */ `subscription OnCreatePost($filter: Mo
     Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -325,15 +556,15 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
     userID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -342,7 +573,7 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -353,8 +584,8 @@ export const onUpdatePost = /* GraphQL */ `subscription OnUpdatePost($filter: Mo
     Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -396,15 +627,15 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
     userID
     User {
       id
-      name
+      email
       image
-      bio
+      name
+      nofPosts
       username
       website
-      nofPosts
       nofFollowers
-      nofFollowing
-      email
+      nofFollowings
+      bio
       Posts {
         nextToken
         __typename
@@ -413,7 +644,7 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
         nextToken
         __typename
       }
-      LikedPosts {
+      Likes {
         nextToken
         __typename
       }
@@ -424,8 +655,8 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
     Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -458,15 +689,15 @@ export const onDeletePost = /* GraphQL */ `subscription OnDeletePost($filter: Mo
 export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
   onCreateUser(filter: $filter) {
     id
-    name
+    email
     image
-    bio
+    name
+    nofPosts
     username
     website
-    nofPosts
     nofFollowers
-    nofFollowing
-    email
+    nofFollowings
+    bio
     Posts {
       items {
         id
@@ -497,11 +728,11 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
       nextToken
       __typename
     }
-    LikedPosts {
+    Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -521,15 +752,15 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
 export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
   onUpdateUser(filter: $filter) {
     id
-    name
+    email
     image
-    bio
+    name
+    nofPosts
     username
     website
-    nofPosts
     nofFollowers
-    nofFollowing
-    email
+    nofFollowings
+    bio
     Posts {
       items {
         id
@@ -560,11 +791,11 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
       nextToken
       __typename
     }
-    LikedPosts {
+    Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -584,15 +815,15 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
 export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
   onDeleteUser(filter: $filter) {
     id
-    name
+    email
     image
-    bio
+    name
+    nofPosts
     username
     website
-    nofPosts
     nofFollowers
-    nofFollowing
-    email
+    nofFollowings
+    bio
     Posts {
       items {
         id
@@ -623,11 +854,11 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
       nextToken
       __typename
     }
-    LikedPosts {
+    Likes {
       items {
         id
-        postId
-        userId
+        userID
+        postID
         createdAt
         updatedAt
         __typename
@@ -643,235 +874,4 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
 ` as GeneratedSubscription<
   APITypes.OnDeleteUserSubscriptionVariables,
   APITypes.OnDeleteUserSubscription
->;
-export const onCreatePostUser = /* GraphQL */ `subscription OnCreatePostUser($filter: ModelSubscriptionPostUserFilterInput) {
-  onCreatePostUser(filter: $filter) {
-    id
-    postId
-    userId
-    post {
-      id
-      description
-      image
-      images
-      video
-      nofComments
-      nofLikes
-      userID
-      User {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      Likes {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    user {
-      id
-      name
-      image
-      bio
-      username
-      website
-      nofPosts
-      nofFollowers
-      nofFollowing
-      email
-      Posts {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      LikedPosts {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnCreatePostUserSubscriptionVariables,
-  APITypes.OnCreatePostUserSubscription
->;
-export const onUpdatePostUser = /* GraphQL */ `subscription OnUpdatePostUser($filter: ModelSubscriptionPostUserFilterInput) {
-  onUpdatePostUser(filter: $filter) {
-    id
-    postId
-    userId
-    post {
-      id
-      description
-      image
-      images
-      video
-      nofComments
-      nofLikes
-      userID
-      User {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      Likes {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    user {
-      id
-      name
-      image
-      bio
-      username
-      website
-      nofPosts
-      nofFollowers
-      nofFollowing
-      email
-      Posts {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      LikedPosts {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnUpdatePostUserSubscriptionVariables,
-  APITypes.OnUpdatePostUserSubscription
->;
-export const onDeletePostUser = /* GraphQL */ `subscription OnDeletePostUser($filter: ModelSubscriptionPostUserFilterInput) {
-  onDeletePostUser(filter: $filter) {
-    id
-    postId
-    userId
-    post {
-      id
-      description
-      image
-      images
-      video
-      nofComments
-      nofLikes
-      userID
-      User {
-        id
-        name
-        image
-        bio
-        username
-        website
-        nofPosts
-        nofFollowers
-        nofFollowing
-        email
-        createdAt
-        updatedAt
-        __typename
-      }
-      Likes {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    user {
-      id
-      name
-      image
-      bio
-      username
-      website
-      nofPosts
-      nofFollowers
-      nofFollowing
-      email
-      Posts {
-        nextToken
-        __typename
-      }
-      Comments {
-        nextToken
-        __typename
-      }
-      LikedPosts {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnDeletePostUserSubscriptionVariables,
-  APITypes.OnDeletePostUserSubscription
 >;

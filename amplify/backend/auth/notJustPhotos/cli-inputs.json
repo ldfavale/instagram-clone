@@ -3,8 +3,8 @@
   "cognitoConfig": {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "instag1280d323",
-    "userPoolName": "instagram",
+    "resourceNameTruncated": "notjus681ccd27",
+    "userPoolName": "notJustPhotos",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -18,11 +18,8 @@
     "emailVerificationMessage": "Verification code: {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [
-      "Requires Lowercase"
-    ],
+    "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email",
       "name"
     ],
     "aliasAttributes": [],
@@ -30,12 +27,15 @@
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "instag1280d323_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "notJus681ccd27_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "1280d323",
-    "resourceName": "instagram",
+    "sharedId": "681ccd27",
+    "resourceName": "notJustPhotos",
     "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",
+    "usernameAttributes": [
+      "email"
+    ],
     "useDefault": "manual",
     "userPoolGroups": false,
     "userPoolGroupList": [],
@@ -60,7 +60,7 @@
     "dependsOn": [
       {
         "category": "function",
-        "resourceName": "instagramPostConfirmation",
+        "resourceName": "notJustPhotosPostConfirmation",
         "triggerProvider": "Cognito",
         "attributes": [
           "Arn",
@@ -68,23 +68,23 @@
         ]
       }
     ],
-    "hostedUI": true,
-    "hostedUIDomainName": "2ln2hb6tx4ml",
-    "authProvidersUserPool": [
-      "Facebook",
-      "Google"
-    ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"sub\"}}]",
     "triggers": {
       "PostConfirmation": [
         "custom"
       ]
     },
+    "hostedUI": true,
+    "hostedUIDomainName": "notjustphotos12c728ec-12c728ec",
+    "authProvidersUserPool": [
+      "Facebook",
+      "Google"
+    ],
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"public_profile\",\"AttributeMapping\":{\"name\":\"name\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid profile\",\"AttributeMapping\":{\"name\":\"name\",\"username\":\"sub\"}}]",
     "parentStack": {
       "Ref": "AWS::StackId"
     },
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"notJustPhotosPostConfirmation\"\n  }\n]",
     "permissions": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"notjustphotos://\"],\"LogoutURLs\":[\"notjustphotos://\"]}",
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"instagramPostConfirmation\"\n  }\n]"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"notjustphotos://\"],\"LogoutURLs\":[\"notjustphotos://\"]}"
   }
 }

@@ -8,13 +8,15 @@ import Carousel from './Carousel';
 import VideoPlayer from './VideoPlayer';
 import { useNavigation } from '@react-navigation/native';
 import { FeedNavigationProp } from '../navigation/types';
-import { DeletePostMutation, DeletePostMutationVariables, Post } from '../API'
+import { CreateLikeMutation, CreateLikeMutationVariables, DeletePostMutation, DeletePostMutationVariables, LikesForPostByUserQuery, LikesForPostByUserQueryVariables, Post, UsersByUsernameQuery, UsersByUsernameQueryVariables } from '../API'
 import placeholder from '../assets/leo_profile.png'
-import { useMutation } from '@apollo/client';
-import { deletePost } from './queries';
+import { useMutation, useQuery } from '@apollo/client';
+import { deletePost, createLike } from './queries';
 import { AuthUser } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import PostMenu from './PostMenu';
+import { likesForPostByUser } from './queries';
+
 
 interface IFeedPost {
   post: Post,
@@ -26,16 +28,26 @@ const userSelector = (context: { user: AuthUser; }) => [context.user];
 
 
 function FeedPost({ post, isVisible, refetch }: IFeedPost) {
-  const [postLiked, setPostLiked] = useState(false)
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
-  const toggleLike = () => setPostLiked(v => !v)
   const toggleDescriptionExpanded = () => setIsDescriptionExpanded(v => !v)
   const navigation = useNavigation<FeedNavigationProp>()
   const {user} = useAuthenticator(userSelector)
-  const [doDeletePost] = useMutation<DeletePostMutation,DeletePostMutationVariables>(deletePost,{variables: {input: { id: post.id }}})
+  const [doDeletePost] = useMutation<DeletePostMutation,DeletePostMutationVariables>(deletePost,{variables: {input: { id: post.id }}, refetchQueries: ["listPosts"]})
+  const [doCreateLike ,{data, loading, error}] = useMutation<CreateLikeMutation,CreateLikeMutationVariables>(createLike,{variables: {input: { postID: post.id, userID: user.userId }}, refetchQueries: ["LikesForPostByUser"]})
+  const {data:usersLikesData} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables: { postID: post.id, userID: { eq: user.userId}}})
   const isMyPost = post.userID === user.userId;
+  const userLike = usersLikesData?.likesForPostByUser?.items?.[0]
   
-  
+
+  const toggleLike = () => {
+    try {
+      doCreateLike();
+    } catch (e) {
+      console.log((e as Error).message)
+    }
+    
+  }
+
   const navigateToUser = () => {
     if(post.User?.id){
       navigation.navigate('UserProfile', {userId: post.User?.id})
@@ -63,8 +75,6 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
       try {
         const response = await doDeletePost();
         console.log(response)
-        refetch()
-
       } catch (e) {
         console.log("ERROR:",(e as Error).message);
       }
@@ -115,10 +125,10 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
         {/* Footer*/}
         <View className=" flex flex-row p-3 space-x-2 ">
           <AntDesign
-            name={postLiked ? 'heart' : 'hearto'}
+            name={userLike ? 'heart' : 'hearto'}
             size={24}
             onPress={toggleLike}
-            style={{ color: postLiked ? colors.accent : colors.black }}
+            style={{ color: userLike ? colors.accent : colors.black }}
           />
 
           <Ionicons

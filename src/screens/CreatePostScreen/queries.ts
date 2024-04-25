@@ -13,9 +13,6 @@ export const createPost = gql`mutation CreatePost(
     nofComments
     nofLikes
     userID
-    User {
-      nofPosts
-    }
   }
 }
 `

@@ -1,29 +1,29 @@
 {
   "staging": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-instagram-staging-151620-authRole",
-      "UnauthRoleArn": "arn:aws:iam::851725394415:role/amplify-instagram-staging-151620-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::851725394415:role/amplify-instagram-staging-151620-authRole",
+      "AuthRoleName": "amplify-notjustphotos-staging-7a413-authRole",
+      "UnauthRoleArn": "arn:aws:iam::851725394415:role/amplify-notjustphotos-staging-7a413-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::851725394415:role/amplify-notjustphotos-staging-7a413-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-instagram-staging-151620-deployment",
-      "UnauthRoleName": "amplify-instagram-staging-151620-unauthRole",
-      "StackName": "amplify-instagram-staging-151620",
-      "StackId": "arn:aws:cloudformation:us-east-1:851725394415:stack/amplify-instagram-staging-151620/d1a96cf0-dd5e-11ee-b2ab-0e0a5dfbcf15",
-      "AmplifyAppId": "d1789d2p7q6z83",
-      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-instagram-staging-151620-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+      "DeploymentBucketName": "amplify-notjustphotos-staging-7a413-deployment",
+      "UnauthRoleName": "amplify-notjustphotos-staging-7a413-unauthRole",
+      "StackName": "amplify-notjustphotos-staging-7a413",
+      "StackId": "arn:aws:cloudformation:us-east-1:851725394415:stack/amplify-notjustphotos-staging-7a413/ee802410-0188-11ef-b172-0affd4fa8181",
+      "AmplifyAppId": "d1c7ve2w6xf21e",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-notjustphotos-staging-7a413-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
-        "instagram": {}
-      },
-      "api": {
-        "instagram": {}
+        "notJustPhotos": {}
       },
       "function": {
-        "instagramPostConfirmation": {
-          "deploymentBucketName": "amplify-instagram-staging-151620-deployment",
-          "s3Key": "amplify-builds/instagramPostConfirmation-4c726971723158346167-build.zip"
+        "notJustPhotosPostConfirmation": {
+          "deploymentBucketName": "amplify-notjustphotos-staging-7a413-deployment",
+          "s3Key": "amplify-builds/notJustPhotosPostConfirmation-56365562764b2b41496e-build.zip"
         }
+      },
+      "api": {
+        "notJustPhotos": {}
       }
     }
   }

@@ -1,6 +1,6 @@
 {
   "api": {
-    "instagram": {
+    "notJustPhotos": {
       "dependsOn": [],
       "output": {
         "authConfig": {
@@ -23,7 +23,7 @@
     }
   },
   "auth": {
-    "instagram": {
+    "notJustPhotos": {
       "customAuth": false,
       "dependsOn": [
         {
@@ -32,7 +32,7 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "instagramPostConfirmation",
+          "resourceName": "notJustPhotosPostConfirmation",
           "triggerProvider": "Cognito"
         }
       ],
@@ -42,20 +42,19 @@
           "SMS"
         ],
         "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [
-            "REQUIRES_LOWERCASE"
-          ],
+          "passwordPolicyCharacters": [],
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL",
           "NAME"
         ],
         "socialProviders": [
           "FACEBOOK",
           "GOOGLE"
         ],
-        "usernameAttributes": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
         "verificationMechanisms": [
           "EMAIL"
         ]
@@ -65,7 +64,7 @@
     }
   },
   "function": {
-    "instagramPostConfirmation": {
+    "notJustPhotosPostConfirmation": {
       "build": true,
       "dependsOn": [
         {
@@ -75,7 +74,7 @@
             "GraphQLAPIKeyOutput"
           ],
           "category": "api",
-          "resourceName": "instagram"
+          "resourceName": "notJustPhotos"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -83,19 +82,19 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_instagramPostConfirmation_deploymentBucketName": {
+    "AMPLIFY_function_notJustPhotosPostConfirmation_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "instagramPostConfirmation"
+          "resourceName": "notJustPhotosPostConfirmation"
         }
       ]
     },
-    "AMPLIFY_function_instagramPostConfirmation_s3Key": {
+    "AMPLIFY_function_notJustPhotosPostConfirmation_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "instagramPostConfirmation"
+          "resourceName": "notJustPhotosPostConfirmation"
         }
       ]
     }
