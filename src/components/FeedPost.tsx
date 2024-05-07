@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Alert, Image, Text, View } from 'react-native'
-import { Entypo,AntDesign, Ionicons,Feather } from '@expo/vector-icons';
+import { AntDesign, Ionicons,Feather } from '@expo/vector-icons';
 import Comment from './FeedComment';
 import colors from '../theme/colors';
 import DoublePressable from './DoublePressable';
@@ -8,10 +8,10 @@ import Carousel from './Carousel';
 import VideoPlayer from './VideoPlayer';
 import { useNavigation } from '@react-navigation/native';
 import { FeedNavigationProp } from '../navigation/types';
-import { CreateLikeMutation, CreateLikeMutationVariables, DeletePostMutation, DeletePostMutationVariables, LikesForPostByUserQuery, LikesForPostByUserQueryVariables, Post, UsersByUsernameQuery, UsersByUsernameQueryVariables } from '../API'
+import { CreateLikeMutation, CreateLikeMutationVariables, DeleteLikeMutation, DeleteLikeMutationVariables, DeletePostMutation, DeletePostMutationVariables, LikesForPostByUserQuery, LikesForPostByUserQueryVariables, Post } from '../API'
 import placeholder from '../assets/leo_profile.png'
 import { useMutation, useQuery } from '@apollo/client';
-import { deletePost, createLike } from './queries';
+import { deletePost, createLike, deleteLike } from './queries';
 import { AuthUser } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import PostMenu from './PostMenu';
@@ -34,14 +34,19 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
   const {user} = useAuthenticator(userSelector)
   const [doDeletePost] = useMutation<DeletePostMutation,DeletePostMutationVariables>(deletePost,{variables: {input: { id: post.id }}, refetchQueries: ["listPosts"]})
   const [doCreateLike ,{data, loading, error}] = useMutation<CreateLikeMutation,CreateLikeMutationVariables>(createLike,{variables: {input: { postID: post.id, userID: user.userId }}, refetchQueries: ["LikesForPostByUser"]})
+  const [doDeleteLike ,{data:deleteLikeData, error:deleteLikeError}] = useMutation<DeleteLikeMutation,DeleteLikeMutationVariables>(deleteLike,{ refetchQueries: ["LikesForPostByUser"]})
   const {data:usersLikesData} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables: { postID: post.id, userID: { eq: user.userId}}})
   const isMyPost = post.userID === user.userId;
-  const userLike = usersLikesData?.likesForPostByUser?.items?.[0]
-  
+  const userLike = usersLikesData?.likesForPostByUser?.items?.[0]  
+
 
   const toggleLike = () => {
     try {
-      doCreateLike();
+      if(userLike){
+        doDeleteLike({variables: {input: { id: userLike.id }}})
+      }else{
+        doCreateLike();
+      }
     } catch (e) {
       console.log((e as Error).message)
     }

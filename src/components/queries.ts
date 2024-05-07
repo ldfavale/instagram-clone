@@ -52,4 +52,19 @@ export const likesForPostByUser = gql`query LikesForPostByUser(
     __typename
   }
 }
-` 
+`
+
+export const deleteLike = gql`mutation DeleteLike(
+  $input: DeleteLikeInput!
+  $condition: ModelLikeConditionInput
+) {
+  deleteLike(input: $input, condition: $condition) {
+    id
+    userID
+    postID
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+`
