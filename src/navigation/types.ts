@@ -69,10 +69,12 @@ export type MyProfileRouteProp = RouteProp<BottomTabNavigatorParamList, 'MyProfi
 
 export type HomeStackNavigatorParamList = {
   Feed: undefined;
+  PostLikes: {id: string};
   UserProfile: { userId: string };
   EditPost: { postId: string}
 };
 
+export type PostLikesRouteProp = RouteProp<HomeStackNavigatorParamList, 'PostLikes'>;
 export type UserProfileNavigationProp = NativeStackNavigationProp<HomeStackNavigatorParamList, 'UserProfile'>
 export type FeedNavigationProp = NativeStackNavigationProp<HomeStackNavigatorParamList, 'Feed'>
 export type EditPostNavigationProp = NativeStackNavigationProp<HomeStackNavigatorParamList, 'EditPost'>

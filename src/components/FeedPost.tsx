@@ -9,13 +9,14 @@ import VideoPlayer from './VideoPlayer';
 import { useNavigation } from '@react-navigation/native';
 import { FeedNavigationProp } from '../navigation/types';
 import { CreateLikeMutation, CreateLikeMutationVariables, DeleteLikeMutation, DeleteLikeMutationVariables, DeletePostMutation, DeletePostMutationVariables, LikesForPostByUserQuery, LikesForPostByUserQueryVariables, Post } from '../API'
-import placeholder from '../assets/leo_profile.png'
 import { useMutation, useQuery } from '@apollo/client';
 import { deletePost, createLike, deleteLike } from './queries';
 import { AuthUser } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import PostMenu from './PostMenu';
 import { likesForPostByUser } from './queries';
+import default_user_image from '../assets/images/default_user.jpg'
+
 
 
 interface IFeedPost {
@@ -86,6 +87,10 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
     }
   }
 
+  const navigateToLikesPage = ()=>{
+    navigation.navigate('PostLikes',{id: post.id})
+  }
+
   const getPostContent = () => {
     if (post.image)
       return (
@@ -103,7 +108,7 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
   }
 
   const content = getPostContent()
-  const profile_image = post.User?.image ? { uri: post.User?.image} : placeholder;
+  const profile_image = post.User?.image ? { uri: post.User?.image} :  default_user_image;
 
   return (
     <>
@@ -156,7 +161,7 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
         </View>
         {/* Who likes*/}
         <View className="px-3 mb-2">
-          <Text>Les gusta a <Text className="font-bold">ldfavale</Text> y a <Text className="font-bold">{post.nofLikes - 1} personas mas</Text></Text>
+          <Text>Les gusta a <Text className="font-bold">ldfavale</Text> y a <Text className="font-bold" onPress={navigateToLikesPage} > {post.nofLikes - 1} personas mas</Text></Text>
         </View>
         <View className="px-3 mb-1">
           <Text numberOfLines={isDescriptionExpanded ? 0 : 3}><Text className="font-bold">{post.User?.username}</Text> {post.description}</Text>
