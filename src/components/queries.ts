@@ -47,6 +47,11 @@ export const likesForPostByUser = gql`query LikesForPostByUser(
       id
       userID
       postID
+      User{
+        username
+        image
+        name
+      }
     }
     nextToken
     __typename
@@ -62,6 +67,19 @@ export const deleteLike = gql`mutation DeleteLike(
     id
     userID
     postID
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+`
+export const updatePost = gql`mutation UpdatePost(
+  $input: UpdatePostInput!
+  $condition: ModelPostConditionInput
+) {
+  updatePost(input: $input, condition: $condition) {
+    id
+    nofLikes
     createdAt
     updatedAt
     __typename

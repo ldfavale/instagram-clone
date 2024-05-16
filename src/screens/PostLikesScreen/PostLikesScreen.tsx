@@ -12,7 +12,7 @@ import ApiErrorMessage from '../../components/apiErrorMessage';
 const PostLikesScreen = () => {
 
   const route = useRoute<PostLikesRouteProp>();
-  const {data,loading,error} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables:{postID:route.params.id}})
+  const {data,loading,error,refetch} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables:{postID:route.params.id}})
   const likes = data?.likesForPostByUser?.items.map((i=>i?.User))
   console.log("LIKES => ",likes)
 
@@ -24,6 +24,8 @@ const PostLikesScreen = () => {
       <FlatList
         data={likes}
         renderItem={(item) => <UserListItem item={item} />}
+        onRefresh={refetch}
+        refreshing={loading}
       />
     </View>
   )

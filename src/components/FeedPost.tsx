@@ -8,9 +8,9 @@ import Carousel from './Carousel';
 import VideoPlayer from './VideoPlayer';
 import { useNavigation } from '@react-navigation/native';
 import { FeedNavigationProp } from '../navigation/types';
-import { CreateLikeMutation, CreateLikeMutationVariables, DeleteLikeMutation, DeleteLikeMutationVariables, DeletePostMutation, DeletePostMutationVariables, LikesForPostByUserQuery, LikesForPostByUserQueryVariables, Post } from '../API'
+import { CreateLikeMutation, CreateLikeMutationVariables, DeleteLikeMutation, DeleteLikeMutationVariables, DeletePostMutation, DeletePostMutationVariables, LikesForPostByUserQuery, LikesForPostByUserQueryVariables, Post, UpdatePostMutation, UpdatePostMutationVariables } from '../API'
 import { useMutation, useQuery } from '@apollo/client';
-import { deletePost, createLike, deleteLike } from './queries';
+import { deletePost,updatePost, createLike, deleteLike } from './queries';
 import { AuthUser } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import PostMenu from './PostMenu';
@@ -34,19 +34,37 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
   const navigation = useNavigation<FeedNavigationProp>()
   const {user} = useAuthenticator(userSelector)
   const [doDeletePost] = useMutation<DeletePostMutation,DeletePostMutationVariables>(deletePost,{variables: {input: { id: post.id }}, refetchQueries: ["listPosts"]})
+  const [doUpdatePost,{data:dataUpdatePost}] = useMutation<UpdatePostMutation,UpdatePostMutationVariables>(updatePost,{variables: {input: { id: post.id }}, refetchQueries: ["listPosts"]})
   const [doCreateLike ,{data, loading, error}] = useMutation<CreateLikeMutation,CreateLikeMutationVariables>(createLike,{variables: {input: { postID: post.id, userID: user.userId }}, refetchQueries: ["LikesForPostByUser"]})
   const [doDeleteLike ,{data:deleteLikeData, error:deleteLikeError}] = useMutation<DeleteLikeMutation,DeleteLikeMutationVariables>(deleteLike,{ refetchQueries: ["LikesForPostByUser"]})
   const {data:usersLikesData} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables: { postID: post.id, userID: { eq: user.userId}}})
   const isMyPost = post.userID === user.userId;
-  const userLike = usersLikesData?.likesForPostByUser?.items?.[0]  
+  const likes = usersLikesData?.likesForPostByUser?.items || [] 
+  const userLike = likes?.[0] 
 
+  const incrementNofLikes = (amount: 1 | -1) =>{
+    try {
+      doUpdatePost({
+        variables: {
+          input: {
+            id: post.id,
+            nofLikes: post.nofLikes + amount
+          }
+        }
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const toggleLike = () => {
     try {
       if(userLike){
-        doDeleteLike({variables: {input: { id: userLike.id }}})
+        doDeleteLike({variables: {input: { id: userLike.id }}});
+        incrementNofLikes(-1)
       }else{
         doCreateLike();
+        incrementNofLikes(1)
       }
     } catch (e) {
       console.log((e as Error).message)
@@ -160,8 +178,15 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
           </View>
         </View>
         {/* Who likes*/}
+        
         <View className="px-3 mb-2">
-          <Text>Les gusta a <Text className="font-bold">ldfavale</Text> y a <Text className="font-bold" onPress={navigateToLikesPage} > {post.nofLikes - 1} personas mas</Text></Text>
+        {post.nofLikes > 0 && likes[0]?.User?.username &&
+          <Text>Les gusta a <Text className="font-bold">{ likes[0]?.User?.username }</Text> 
+            {post.nofLikes > 1 && 
+            <Text> y a<Text className="font-bold" onPress={navigateToLikesPage} > {post.nofLikes - 1} personas mas</Text></Text>
+            }
+          </Text>
+        }
         </View>
         <View className="px-3 mb-1">
           <Text numberOfLines={isDescriptionExpanded ? 0 : 3}><Text className="font-bold">{post.User?.username}</Text> {post.description}</Text>
