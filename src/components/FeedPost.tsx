@@ -8,77 +8,33 @@ import Carousel from './Carousel';
 import VideoPlayer from './VideoPlayer';
 import { useNavigation } from '@react-navigation/native';
 import { FeedNavigationProp } from '../navigation/types';
-import { CreateLikeMutation, CreateLikeMutationVariables, DeleteLikeMutation, DeleteLikeMutationVariables, DeletePostMutation, DeletePostMutationVariables, LikesForPostByUserQuery, LikesForPostByUserQueryVariables, Post, UpdatePostMutation, UpdatePostMutationVariables } from '../API'
-import { useMutation, useQuery } from '@apollo/client';
-import { deletePost,updatePost, createLike, deleteLike } from './queries';
-import { AuthUser } from 'aws-amplify/auth';
-import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import {  Post } from '../API'
 import PostMenu from './PostMenu';
-import { likesForPostByUser } from './queries';
 import default_user_image from '../assets/images/default_user.jpg'
-
+import useLikeService from '../services/LikeService/LikeService';
+import usePostService from '../services/PostService/PostService';
 
 
 interface IFeedPost {
   post: Post,
-  isVisible: boolean,
-  refetch: () => {}
+  isVisible: boolean
 }
 
-const userSelector = (context: { user: AuthUser; }) => [context.user];
 
-
-function FeedPost({ post, isVisible, refetch }: IFeedPost) {
+function FeedPost({ post, isVisible }: IFeedPost) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const toggleDescriptionExpanded = () => setIsDescriptionExpanded(v => !v)
   const navigation = useNavigation<FeedNavigationProp>()
-  const {user} = useAuthenticator(userSelector)
-  const [doDeletePost] = useMutation<DeletePostMutation,DeletePostMutationVariables>(deletePost,{variables: {input: { id: post.id }}, refetchQueries: ["listPosts"]})
-  const [doUpdatePost,{data:dataUpdatePost}] = useMutation<UpdatePostMutation,UpdatePostMutationVariables>(updatePost,{variables: {input: { id: post.id }}, refetchQueries: ["listPosts"]})
-  const [doCreateLike ,{data, loading, error}] = useMutation<CreateLikeMutation,CreateLikeMutationVariables>(createLike,{variables: {input: { postID: post.id, userID: user.userId }}, refetchQueries: ["LikesForPostByUser"]})
-  const [doDeleteLike ,{data:deleteLikeData, error:deleteLikeError}] = useMutation<DeleteLikeMutation,DeleteLikeMutationVariables>(deleteLike,{ refetchQueries: ["LikesForPostByUser"]})
-    const {data:usersLikesData} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables: { postID: post.id, userID: { eq: user.userId}}})
-    const {data:postLikesData} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables: { postID: post.id}})
-  const isMyPost = post.userID === user.userId;
-  const postLikes = postLikesData?.likesForPostByUser?.items || [] 
-  const userLikes = usersLikesData?.likesForPostByUser?.items || [] 
-  const userLike = userLikes?.[0] 
+  const { toggleLike, isLiked, postLikes } = useLikeService(post)
+  const { isMyPost, submitPostDeletion } = usePostService(post)
 
-  const incrementNofLikes = (amount: 1 | -1) =>{
-    try {
-      doUpdatePost({
-        variables: {
-          input: {
-            id: post.id,
-            nofLikes: post.nofLikes + amount
-          }
-        }
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const toggleLike = () => {
-    try {
-      if(userLike){
-        doDeleteLike({variables: {input: { id: userLike.id }}});
-        incrementNofLikes(-1)
-      }else{
-        doCreateLike();
-        incrementNofLikes(1)
-      }
-    } catch (e) {
-      console.log((e as Error).message)
-    }
-    
-  }
 
   const navigateToUser = () => {
     if(post.User?.id){
       navigation.navigate('UserProfile', {userId: post.User?.id})
     }
   }
+
   const onDeleteButtonPressed = () => {
     Alert.alert("Are you sure?", "Deleting a Post is permanent", [
       {
@@ -92,19 +48,9 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
       }
     ])
   }
+
   const onEditButtonPressed = () => {
     navigation.navigate("EditPost", {postId: post.id});
-  }
-
-  const submitPostDeletion = async () => {
-    if(isMyPost){
-      try {
-        const response = await doDeletePost();
-        console.log(response)
-      } catch (e) {
-        console.log("ERROR:",(e as Error).message);
-      }
-    }
   }
 
   const navigateToLikesPage = ()=>{
@@ -155,10 +101,10 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
         {/* Footer*/}
         <View className=" flex flex-row p-3 space-x-2 ">
           <AntDesign
-            name={userLike ? 'heart' : 'hearto'}
+            name={isLiked ? 'heart' : 'hearto'}
             size={24}
             onPress={toggleLike}
-            style={{ color: userLike ? colors.accent : colors.black }}
+            style={{ color: isLiked ? colors.accent : colors.black }}
           />
 
           <Ionicons
