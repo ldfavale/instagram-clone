@@ -14,7 +14,6 @@ const PostLikesScreen = () => {
   const route = useRoute<PostLikesRouteProp>();
   const {data,loading,error,refetch} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables:{postID:route.params.id}})
   const likes = data?.likesForPostByUser?.items.map((i=>i?.User))
-  console.log("LIKES => ",likes)
 
   if(loading){ return <Loading/> }
   if(error){return <ApiErrorMessage title='Error Fetching Users' message={error.message}/>}

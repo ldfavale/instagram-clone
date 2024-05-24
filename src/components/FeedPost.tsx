@@ -37,10 +37,12 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
   const [doUpdatePost,{data:dataUpdatePost}] = useMutation<UpdatePostMutation,UpdatePostMutationVariables>(updatePost,{variables: {input: { id: post.id }}, refetchQueries: ["listPosts"]})
   const [doCreateLike ,{data, loading, error}] = useMutation<CreateLikeMutation,CreateLikeMutationVariables>(createLike,{variables: {input: { postID: post.id, userID: user.userId }}, refetchQueries: ["LikesForPostByUser"]})
   const [doDeleteLike ,{data:deleteLikeData, error:deleteLikeError}] = useMutation<DeleteLikeMutation,DeleteLikeMutationVariables>(deleteLike,{ refetchQueries: ["LikesForPostByUser"]})
-  const {data:usersLikesData} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables: { postID: post.id, userID: { eq: user.userId}}})
+    const {data:usersLikesData} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables: { postID: post.id, userID: { eq: user.userId}}})
+    const {data:postLikesData} = useQuery<LikesForPostByUserQuery,LikesForPostByUserQueryVariables>(likesForPostByUser,{variables: { postID: post.id}})
   const isMyPost = post.userID === user.userId;
-  const likes = usersLikesData?.likesForPostByUser?.items || [] 
-  const userLike = likes?.[0] 
+  const postLikes = postLikesData?.likesForPostByUser?.items || [] 
+  const userLikes = usersLikesData?.likesForPostByUser?.items || [] 
+  const userLike = userLikes?.[0] 
 
   const incrementNofLikes = (amount: 1 | -1) =>{
     try {
@@ -180,10 +182,10 @@ function FeedPost({ post, isVisible, refetch }: IFeedPost) {
         {/* Who likes*/}
         
         <View className="px-3 mb-2">
-        {post.nofLikes > 0 && likes[0]?.User?.username &&
-          <Text>Les gusta a <Text className="font-bold">{ likes[0]?.User?.username }</Text> 
-            {post.nofLikes > 1 && 
-            <Text> y a<Text className="font-bold" onPress={navigateToLikesPage} > {post.nofLikes - 1} personas mas</Text></Text>
+        {postLikes.length > 0 &&
+          <Text>Les gusta a <Text className="font-bold">{ postLikes[0]?.User?.username }</Text> 
+            {postLikes.length > 1 && 
+            <Text> y a<Text className="font-bold" onPress={navigateToLikesPage} > {postLikes.length - 1} personas mas</Text></Text>
             }
           </Text>
         }
